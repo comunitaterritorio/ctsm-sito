@@ -315,8 +315,7 @@
     margin-top: 40px; text-align: center;
   }
 
-  /* ── TESSERAMENTO ── */
-  #tesseramento { background: var(--white); }
+  /* ── (rimosso: tesseramento) ── */
   .membership-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px;
   }
@@ -639,8 +638,7 @@
     <li><a href="#social">Social</a></li>
     <li><a href="#notizie">Notizie</a></li>
     <li><a href="#" onclick="openArchivio(); return false;">Archivio</a></li>
-    <li><a href="#contatti">Contatti</a></li>
-    <li><a href="#tesseramento" class="nav-cta">Iscriviti</a></li>
+    <li><a href="#contatti" class="nav-cta">Contattaci</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Apri menu" type="button">
     <span></span><span></span><span></span>
@@ -654,8 +652,7 @@
   <a href="#social" class="mob-link">Social</a>
   <a href="#notizie" class="mob-link">Notizie</a>
   <a href="#" onclick="closeMobile(); openArchivio(); return false;">Archivio</a>
-  <a href="#contatti" onclick="closeMobile()">Contatti</a>
-  <a href="#tesseramento" onclick="closeMobile()" style="color:var(--gold)">Iscriviti →</a>
+  <a href="#contatti" onclick="closeMobile()" style="color:var(--gold)">Contattaci →</a>
 </div>
 
 <!-- HERO -->
@@ -669,13 +666,12 @@
     </h1>
     <p class="hero-subtitle">Comunità e Territorio San Marino</p>
     <p class="hero-desc">
-      CT San Marino è una realtà associativa impegnata nella difesa dei diritti abitativi,
+      CT San Marino è una realtà impegnata nella difesa dei diritti abitativi,
       nel benessere delle famiglie e nella valorizzazione dell'identità territoriale
       della Repubblica di San Marino.
     </p>
     <div class="hero-actions">
-      <a href="#tesseramento" class="btn btn-gold">Unisciti a noi ↓</a>
-      <a href="#chi-siamo" class="btn btn-outline">Scopri di più</a>
+      <a href="#chi-siamo" class="btn btn-gold">Scopri di più ↓</a>
       <a href="https://wa.me/393665730811" target="_blank" rel="noopener" class="btn" style="background:#25D366; color:#ffffff; display:inline-flex; align-items:center; gap:10px; border-radius:2px; padding:10px 22px; font-weight:600; letter-spacing:.06em; text-decoration:none; font-size:13px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.08c-.24.68-1.4 1.32-1.93 1.4-.5.08-1.12.11-1.8-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.19-1.58-1.19-3.02 0-1.44.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.14.07.14.12.31.02.5-.1.19-.15.31-.3.48-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.63-.14.26.1 1.63.77 1.91.91.29.14.48.21.55.33.07.12.07.69-.17 1.37z"/></svg>
         Scrivici su WhatsApp
@@ -701,7 +697,7 @@
 <!-- CHI SIAMO -->
 <section id="chi-siamo">
   <div class="section-label">Chi siamo</div>
-  <h2 class="section-title">Una realtà associativa <em>nata dalla comunità</em></h2>
+  <h2 class="section-title">Una realtà <em>nata dalla comunità</em></h2>
   <p class="section-lead">
     CT San Marino nasce dall'esigenza concreta di dare voce ai cittadini sammarinesi sui temi della casa, della famiglia e del territorio.
   </p>
@@ -786,11 +782,11 @@
         I nostri prossimi <em style="font-style:italic; color:var(--gold);">eventi</em><br>saranno annunciati a breve
       </h3>
       <p style="font-size:14px; color:rgba(255,255,255,.5); max-width:480px; margin:0 auto 32px; line-height:1.8;">
-        Seguici su Facebook o iscriviti all'associazione per ricevere tutti gli aggiornamenti sulle nostre iniziative sul territorio sammarinese.
+        Seguici su Facebook o contattaci per ricevere tutti gli aggiornamenti sulle nostre iniziative sul territorio sammarinese.
       </p>
       <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
         <a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener" class="btn btn-gold">Seguici su Facebook →</a>
-        <a href="#tesseramento" class="btn btn-outline">Iscriviti all'associazione</a>
+        <a href="https://wa.me/393665730811" target="_blank" rel="noopener" class="btn btn-outline">Contattaci</a>
       </div>
     </div>
   </div>
@@ -879,123 +875,6 @@
 }(document, 'script', 'facebook-jssdk'));
 </script>
 
-
-<section id="tesseramento">
-  <div class="section-label">Unisciti a noi</div>
-  <h2 class="section-title">Unisciti a <em>noi</em></h2>
-  <p class="section-lead">
-    Iscrivendoti a CT San Marino contribuisci attivamente alla tutela dei diritti
-    della comunità sammarinese. Ogni voce conta.
-  </p>
-
-  <div class="membership-grid">
-    <div>
-      <div class="section-label" style="margin-bottom: 12px;">Tipologie di iscrizione</div>
-      <div class="membership-types">
-        <div class="membership-card">
-          <div class="mc-header">
-            <div class="mc-name">Socio Ordinario</div>
-            <div class="mc-price">Gratuito <span>/ anno</span></div>
-          </div>
-          <div class="mc-body">
-            <ul class="mc-features">
-              <li>Diritto di voto in assemblea</li>
-              <li>Accesso a tutti gli eventi</li>
-              <li>Newsletter e comunicati</li>
-              <li>Partecipazione ai gruppi di lavoro</li>
-              <li>Tessera associativa digitale</li>
-            </ul>
-          </div>
-        </div>
-        <div class="membership-card featured">
-          <div class="mc-header">
-            <div class="mc-name">Socio Sostenitore</div>
-            <div class="mc-price">Contributo libero <span>/ anno</span></div>
-          </div>
-          <div class="mc-body">
-            <ul class="mc-features">
-              <li>Tutti i benefici del Socio Ordinario</li>
-              <li>Menzione nei materiali associativi</li>
-              <li>Accesso anticipato a dossier e report</li>
-              <li>Inviti a incontri riservati ai sostenitori</li>
-              <li>Diploma di socio sostenitore</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="membership-form-wrap">
-      <div class="form-title">Modulo di iscrizione</div>
-      <form id="formContent" action="https://formspree.io/f/xwvwnlnr" method="POST">
-          <input type="hidden" name="_subject" value="Nuova iscrizione CT San Marino">
-          <input type="hidden" name="_next" value="https://ctsmsanmarino.netlify.app/grazie.html">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nome *</label>
-              <input type="text" name="nome" placeholder="Il tuo nome" required>
-            </div>
-            <div class="form-group">
-              <label>Cognome *</label>
-              <input type="text" name="cognome" placeholder="Il tuo cognome" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Email *</label>
-            <input type="email" name="email" placeholder="la.tua@email.sm" required>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Telefono</label>
-              <input type="tel" name="telefono" placeholder="+378 / +39">
-            </div>
-            <div class="form-group">
-              <label>Tipologia socio *</label>
-              <select name="tipologia_socio" required>
-                <option value="">– Seleziona –</option>
-                <option value="Socio Ordinario (gratuito)">Socio Ordinario (gratuito)</option>
-                <option value="Socio Sostenitore (contributo libero)">Socio Sostenitore (contributo libero)</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Indirizzo di residenza</label>
-            <input type="text" name="indirizzo" placeholder="Via / Strada, n°">
-          </div>
-          <div class="form-group">
-            <label>Comune di residenza</label>
-            <select name="castello">
-              <option value="">– Castello –</option>
-              <option>Acquaviva</option><option>Borgo Maggiore</option>
-              <option>Chiesanuova</option><option>Domagnano</option>
-              <option>Faetano</option><option>Fiorentino</option>
-              <option>Montegiardino</option><option>San Marino Città</option>
-              <option>Serravalle</option><option>Altro</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Motivazione (facoltativo)</label>
-            <textarea name="motivazione" placeholder="Perché vuoi unirti a CT San Marino?"></textarea>
-          </div>
-          <div class="form-check">
-            <input type="checkbox" id="f-privacy" name="privacy" value="accettato" required>
-            <label for="f-privacy">Ho letto e accetto l'<a href="#" onclick="openModal('privacy')">Informativa sulla Privacy</a> e acconsento al trattamento dei miei dati personali.</label>
-          </div>
-          <div class="form-check">
-            <input type="checkbox" id="f-statuto" name="regolamento" value="accettato" required>
-            <label for="f-statuto">Dichiaro di aver letto il Regolamento associativo e di condividerne le finalità.</label>
-          </div>
-          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Invia richiesta di iscrizione →</button>
-        </form>
-      <div class="form-success" id="formSuccess">
-        <div class="checkmark">✓</div>
-        <h4>Richiesta inviata!</h4>
-        <p>Grazie per aver scelto di unirti a CT San Marino.<br>
-        Riceverai una email di conferma entro 48 ore con tutti i dettagli per completare la tua iscrizione.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- CONTATTI -->
 <section id="contatti">
@@ -1102,7 +981,6 @@
       <div class="footer-col-title">Associazione</div>
       <ul class="footer-links">
         <li><a href="#chi-siamo">Chi siamo</a></li>
-        <li><a href="#tesseramento">Tesseramento</a></li>
         <li><a href="#contatti">Contatti</a></li>
       </ul>
     </div>
@@ -1280,8 +1158,7 @@
     n1: { title: 'CT incontra il Segretario di Stato per il Territorio', meta: 'Comunicato \u00b7 Marzo 2026', body: '<p>Una delegazione di CT San Marino ha incontrato il Segretario di Stato per avviare un confronto istituzionale sull\u2019emergenza abitativa.</p>' },
     n2: { title: 'I dati sull\u2019affitto a San Marino nel 2026', meta: 'Analisi CT \u00b7 Aprile 2026', body: '<p>Il mercato degli affitti ha registrato un incremento del 18-22% nelle zone pi\u00f9 richieste.</p>' },
     n3: { title: 'Legge 64/2025: cosa cambia per le famiglie', meta: 'Normativa \u00b7 Marzo 2026', body: '<p>La Legge 64/2025 introduce modifiche al quadro normativo abitativo. CT monitora l\u2019attuazione e raccoglie segnalazioni dai cittadini.</p>' },
-    n4: { title: 'Apertura del tesseramento 2026', meta: 'Notizie \u00b7 Marzo 2026', body: '<p>CT San Marino ha aperto il tesseramento 2026. L\u2019iscrizione \u00e8 gratuita. Compila il modulo sul sito.</p>' },
-    privacy: { title: 'Informativa sulla Privacy', meta: 'Normativa RSM \u00b7 2026', body: '<p>CT San Marino tratta i dati personali nel rispetto della normativa sammarinese. I dati sono usati esclusivamente per la gestione associativa e non vengono ceduti a terzi. Per esercitare i tuoi diritti scrivi a comunitaterritoriosanmarino&#64;gmail.com</p>' },
+    privacy: { title: 'Informativa sulla Privacy', meta: 'Normativa RSM \u00b7 2026', body: '<p>CT San Marino tratta i dati personali nel rispetto della normativa sammarinese. I dati sono usati esclusivamente per la gestione e non vengono ceduti a terzi. Per esercitare i tuoi diritti scrivi a comunitaterritoriosanmarino&#64;gmail.com</p>' },
     cookie: { title: 'Cookie Policy', meta: '2026', body: '<p>Questo sito usa esclusivamente cookie tecnici. Nessun cookie di profilazione o tracciamento di terze parti.</p>' }
   };
 
@@ -1302,56 +1179,6 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') window.closeModalDirect();
   });
-
-  // FORM ISCRIZIONE — Formspree
-  window.submitForm = function() {
-    var nome = document.getElementById('f-nome').value.trim();
-    var cognome = document.getElementById('f-cognome').value.trim();
-    var email = document.getElementById('f-email').value.trim();
-    var tipo = document.getElementById('f-tipo').value;
-    var privacy = document.getElementById('f-privacy').checked;
-    var statuto = document.getElementById('f-statuto').checked;
-    if (!nome || !cognome || !email || !tipo) {
-      alert('Compila i campi obbligatori: Nome, Cognome, Email e Tipologia socio.');
-      return;
-    }
-    if (!privacy || !statuto) {
-      alert('Accetta la Privacy Policy e il Regolamento per procedere.');
-      return;
-    }
-    var btn = document.querySelector('#formContent .btn-gold');
-    if (btn) { btn.textContent = 'Invio in corso...'; btn.disabled = true; }
-    var fd = new FormData();
-    fd.append('_subject', 'Nuova iscrizione CT San Marino');
-    fd.append('_replyto', email);
-    fd.append('tipo_modulo', 'Iscrizione');
-    fd.append('nome', nome);
-    fd.append('cognome', cognome);
-    fd.append('email', email);
-    fd.append('telefono', document.getElementById('f-tel').value.trim());
-    fd.append('tipologia_socio', tipo);
-    fd.append('indirizzo', document.getElementById('f-indirizzo').value.trim());
-    fd.append('castello', document.getElementById('f-castello').value);
-    fd.append('motivazione', document.getElementById('f-motivation').value.trim());
-    fetch('https://formspree.io/f/xwvwnlnr', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: fd
-    })
-    .then(function(r) {
-      if (r.ok) {
-        document.getElementById('formContent').style.display = 'none';
-        document.getElementById('formSuccess').style.display = 'block';
-      } else {
-        alert('Errore nell\'invio. Scrivici a comunitaterritoriosanmarino@gmail.com');
-        if (btn) { btn.textContent = 'Invia richiesta di iscrizione \u2192'; btn.disabled = false; }
-      }
-    })
-    .catch(function() {
-      alert('Errore di connessione. Scrivici a comunitaterritoriosanmarino@gmail.com');
-      if (btn) { btn.textContent = 'Invia richiesta di iscrizione \u2192'; btn.disabled = false; }
-    });
-  };
 
   // FORM CONTATTI — Formspree
   window.submitContact = function() {
