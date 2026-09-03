@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "comunicati"
+public_folder: "/comunicati"
+
+publish_mode: simple
+
+collections:
+  - name: "comunicati"
+    label: "Archivio Comunicati"
+    files:
+      - file: "data/comunicati.json"
+        label: "Comunicati"
+        name: "comunicati"
+        fields:
+          - label: "Comunicati"
+            name: "items"
+            widget: "list"
+            label_singular: "Comunicato"
+            summary: "{{title}} — {{date}}"
+            fields:
+              - { label: "Titolo", name: "title", widget: "string" }
+              - { label: "Data (es. 3 Settembre 2026)", name: "date", widget: "string" }
+              - { label: "File PDF", name: "file", widget: "file", media_library: { config: { multiple: false } } }
+
+  - name: "eventi"
+    label: "Eventi"
+    files:
+      - file: "data/eventi.json"
+        label: "Eventi"
+        name: "eventi"
+        fields:
+          - label: "Eventi"
+            name: "items"
+            widget: "list"
+            label_singular: "Evento"
+            summary: "{{title}} — {{date}} {{month}}"
+            fields:
+              - { label: "Titolo", name: "title", widget: "string" }
+              - { label: "Giorno (numero, es. 15)", name: "day", widget: "string" }
+              - { label: "Mese (es. APR)", name: "month", widget: "string" }
+              - { label: "Anno (es. 2026)", name: "year", widget: "string" }
+              - { label: "Orario (es. ore 18:30)", name: "time", widget: "string" }
+              - { label: "Luogo", name: "location", widget: "string" }
+              - { label: "Categoria (es. Assemblea, Incontro)", name: "category", widget: "string", required: false }
+              - { label: "Descrizione", name: "description", widget: "text" }

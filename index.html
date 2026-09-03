@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CT San Marino – Comunità e Territorio San Marino</title>
+<script>
+  // Evita che il browser riapra la pagina a metà scroll (memoria di navigazione / link con #ancora)
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  if (!location.hash) { window.scrollTo(0, 0); }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2044;
+    --navy-light: #1a3166;
+    --navy-deep: #091529;
+    --gold: #c9a84c;
+    --gold-light: #e0c47a;
+    --gold-pale: #f5e9c8;
+    --cream: #faf7f0;
+    --white: #ffffff;
+    --text: #1a1a2e;
+    --text-muted: #5a6070;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(15,32,68,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw; height: 68px;
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,.35); }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 14px;
+    text-decoration: none;
+  }
+  .nav-emblem {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 700; color: var(--navy);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(201,168,76,.3);
+  }
+  .nav-wordmark { line-height: 1; }
+  .nav-wordmark .cts { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: .06em; }
+  .nav-wordmark .full { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-top: 2px; display: block; }
+
+  .nav-links {
+    display: flex; gap: 0; list-style: none;
+  }
+  .nav-links a {
+    display: block; padding: 8px 16px;
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .25s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px;
+    background: var(--gold); transform: scaleX(0); transition: transform .25s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: var(--gold); color: var(--navy) !important;
+    padding: 8px 20px !important; border-radius: 2px;
+    font-weight: 600 !important; letter-spacing: .1em !important;
+    transition: background .25s, color .25s !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; }
+  .nav-cta::after { display: none !important; }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 10px;
+    background: none; border: none; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; position: relative; z-index: 1001;
+    min-width: 44px; min-height: 44px; align-items: center; justify-content: center;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); transition: .3s; }
+  .hamburger:focus { outline: none; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+    background: var(--navy-deep); z-index: 1000;
+    flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    -webkit-overflow-scrolling: touch; overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex !important; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-size: 22px; color: rgba(255,255,255,.8); text-decoration: none; letter-spacing: .1em; }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--navy-deep);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 120px 5vw 80px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 40%, rgba(201,168,76,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 70% at 10% 80%, rgba(201,168,76,.05) 0%, transparent 50%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .hero-lines::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,.12);
+  }
+  .hero-lines::after {
+    content: '';
+    position: absolute; top: 0px; right: 50px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,.07);
+  }
+
+  .hero-content { position: relative; max-width: 760px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: 6px 14px; margin-bottom: 36px;
+    font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold);
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 7vw, 86px);
+    font-weight: 300; line-height: 1.08;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300; color: rgba(255,255,255,.55);
+    margin-bottom: 32px; line-height: 1.5;
+  }
+  .hero-desc {
+    font-size: 15px; line-height: 1.8; color: rgba(255,255,255,.6);
+    max-width: 560px; margin-bottom: 48px;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; font-size: 12px; letter-spacing: .15em;
+    text-transform: uppercase; text-decoration: none; font-weight: 500;
+    border-radius: 2px; transition: all .25s; cursor: pointer; border: none;
+    font-family: 'Jost', sans-serif;
+  }
+  .btn-gold { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,76,.3); }
+  .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.3); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-navy { background: var(--navy); color: var(--white); }
+  .btn-navy:hover { background: var(--navy-light); transform: translateY(-1px); }
+
+  .hero-stats {
+    position: absolute; bottom: 60px; right: 5vw;
+    display: flex; gap: 48px;
+  }
+  .stat { text-align: center; }
+  .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; }
+  .stat-l { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 6px; }
+
+  /* ── SECTIONS BASE ── */
+  section { padding: 100px 5vw; }
+  .section-label {
+    font-size: 10px; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 4vw, 52px); font-weight: 300; line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-lead { font-size: 16px; line-height: 1.8; color: var(--text-muted); max-width: 620px; }
+
+  /* ── CHI SIAMO ── */
+  #chi-siamo { background: var(--cream); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px;
+  }
+  .about-text p { font-size: 15px; line-height: 1.9; color: var(--text-muted); margin-bottom: 20px; }
+  .founders {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .founder-card {
+    display: flex; align-items: center; gap: 20px;
+    padding: 20px; background: var(--white);
+    border: 1px solid rgba(15,32,68,.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 2px;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .founder-card:hover { box-shadow: 0 8px 32px rgba(15,32,68,.1); transform: translateX(4px); }
+  .founder-photo {
+    width: 58px; height: 58px; border-radius: 50%;
+    object-fit: cover; object-position: center top;
+    flex-shrink: 0;
+    border: 2px solid var(--gold);
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  }
+  .founder-info .name { font-weight: 600; font-size: 15px; color: var(--navy); }
+  .founder-info .role { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
+
+  .mission-pillars {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: rgba(15,32,68,.08); border: 1px solid rgba(15,32,68,.08);
+    border-radius: 4px; overflow: hidden; margin-top: 60px;
+  }
+  .pillar {
+    background: var(--white); padding: 32px 28px;
+    transition: background .25s;
+  }
+  .pillar:hover { background: var(--navy-deep); }
+  .pillar:hover .pillar-icon { color: var(--gold); }
+  .pillar:hover .pillar-title { color: var(--white); }
+  .pillar:hover .pillar-desc { color: rgba(255,255,255,.55); }
+  .pillar-icon { font-size: 28px; margin-bottom: 16px; display: block; transition: color .25s; color: var(--navy); }
+  .pillar-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 10px; transition: color .25s; }
+  .pillar-desc { font-size: 13px; line-height: 1.7; color: var(--text-muted); transition: color .25s; }
+
+  /* ── STATUTO ── */
+  #statuto { background: var(--navy-deep); color: var(--white); }
+  #statuto .section-title { color: var(--white); }
+  #statuto .section-lead { color: rgba(255,255,255,.55); }
+
+  .statuto-grid {
+    display: grid; grid-template-columns: 280px 1fr; gap: 0;
+    border: 1px solid rgba(201,168,76,.2); border-radius: 4px; overflow: hidden;
+    margin-top: 60px;
+  }
+  .statuto-nav {
+    background: rgba(255,255,255,.04); border-right: 1px solid rgba(201,168,76,.15);
+    padding: 16px 0;
+  }
+  .statuto-nav-item {
+    display: block; padding: 12px 24px;
+    font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.5); cursor: pointer;
+    border-left: 2px solid transparent; transition: all .2s;
+    text-decoration: none;
+  }
+  .statuto-nav-item:hover, .statuto-nav-item.active {
+    color: var(--gold); border-left-color: var(--gold);
+    background: rgba(201,168,76,.06);
+  }
+  .statuto-content { padding: 40px 48px; overflow-y: auto; max-height: 640px; }
+  .statuto-article {
+    display: none; animation: fadeIn .35s;
+  }
+  .statuto-article.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+  .art-number {
+    font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .art-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 26px;
+    font-weight: 400; color: var(--white); margin-bottom: 20px; line-height: 1.2;
+  }
+  .art-body {
+    font-size: 14px; line-height: 1.9; color: rgba(255,255,255,.65);
+  }
+  .art-body p { margin-bottom: 14px; }
+  .art-body ul { padding-left: 20px; margin-bottom: 14px; }
+  .art-body ul li { margin-bottom: 8px; }
+
+  .statuto-download {
+    margin-top: 40px; text-align: center;
+  }
+
+  /* ── TESSERAMENTO ── */
+  #tesseramento { background: var(--white); }
+  .membership-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px;
+  }
+  .membership-types { display: flex; flex-direction: column; gap: 20px; }
+  .membership-card {
+    border: 1px solid rgba(15,32,68,.1); border-radius: 4px; overflow: hidden;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .membership-card:hover { box-shadow: 0 12px 40px rgba(15,32,68,.12); transform: translateY(-3px); }
+  .membership-card.featured { border-color: var(--gold); }
+  .mc-header {
+    padding: 20px 24px 16px; border-bottom: 1px solid rgba(15,32,68,.06);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .membership-card.featured .mc-header { background: var(--navy); }
+  .mc-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--navy); }
+  .membership-card.featured .mc-name { color: var(--white); }
+  .mc-price { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--gold); }
+  .mc-price span { font-size: 12px; color: var(--text-muted); }
+  .membership-card.featured .mc-price span { color: rgba(255,255,255,.5); }
+  .mc-body { padding: 20px 24px; }
+  .mc-features { list-style: none; }
+  .mc-features li { font-size: 13px; color: var(--text-muted); padding: 6px 0; border-bottom: 1px solid rgba(15,32,68,.05); display: flex; align-items: center; gap: 10px; }
+  .mc-features li:last-child { border: none; }
+  .mc-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+  .membership-form-wrap {
+    background: var(--navy-deep); border-radius: 4px;
+    padding: 40px 36px;
+    border: 1px solid rgba(201,168,76,.2);
+  }
+  .form-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 26px;
+    color: var(--white); margin-bottom: 28px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 12px 16px;
+    background: rgba(255,255,255,.07); border: 1px solid rgba(201,168,76,.2);
+    border-radius: 2px; font-family: 'Jost', sans-serif; font-size: 14px;
+    color: var(--white); outline: none; transition: border-color .25s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-group select option { background: var(--navy-deep); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-check { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+  .form-check input[type=checkbox] { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
+  .form-check label { font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.6; }
+  .form-check label a { color: var(--gold); text-decoration: none; }
+  .form-success {
+    display: none; text-align: center; padding: 24px;
+  }
+  .form-success .checkmark { font-size: 48px; color: var(--gold); margin-bottom: 16px; }
+  .form-success p { color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.7; }
+  .form-success h4 { color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 10px; }
+
+  /* ── EVENTI ── */
+  #eventi { background: var(--cream); }
+  .events-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px;
+  }
+  .event-card {
+    background: var(--white); border-radius: 4px;
+    border: 1px solid rgba(15,32,68,.08);
+    overflow: hidden; transition: box-shadow .25s, transform .25s;
+  }
+  .event-card:hover { box-shadow: 0 12px 40px rgba(15,32,68,.12); transform: translateY(-4px); }
+  .event-card.featured { grid-column: span 1; border-color: var(--gold); }
+  .event-date-band {
+    background: var(--navy); padding: 16px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .event-day { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; }
+  .event-month-year { line-height: 1; }
+  .event-month { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+  .event-year { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 2px; }
+  .event-body { padding: 24px; }
+  .event-category { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .event-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--navy); margin-bottom: 12px; line-height: 1.3; }
+  .event-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+  .event-meta { display: flex; gap: 16px; font-size: 11px; color: var(--text-muted); }
+  .event-meta span { display: flex; align-items: center; gap: 6px; }
+
+  .events-cta { text-align: center; margin-top: 48px; }
+
+  /* ── NOTIZIE ── */
+  #notizie { background: var(--navy); }
+  #notizie .section-title { color: var(--white); }
+  #notizie .section-lead { color: rgba(255,255,255,.5); }
+
+  .news-grid {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 2px;
+    background: rgba(255,255,255,.07); border-radius: 4px; overflow: hidden;
+    margin-top: 60px; border: 1px solid rgba(201,168,76,.15);
+  }
+  .news-main {
+    background: rgba(255,255,255,.04); padding: 40px;
+    border-right: 1px solid rgba(201,168,76,.1);
+  }
+  .news-label { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .news-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--white); line-height: 1.25; margin-bottom: 16px; }
+  .news-excerpt { font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.8; margin-bottom: 24px; }
+  .news-date { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .1em; }
+
+  .news-sidebar { display: flex; flex-direction: column; }
+  .news-item {
+    padding: 24px 28px; background: rgba(255,255,255,.03);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    transition: background .2s;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-item:hover { background: rgba(255,255,255,.07); }
+  .news-item-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .news-item-title { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.5; margin-bottom: 8px; }
+  .news-item-date { font-size: 11px; color: rgba(255,255,255,.3); }
+
+  /* ── CONTATTI ── */
+  #contatti { background: var(--cream); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px;
+  }
+  .contact-info { }
+  .contact-block { margin-bottom: 36px; }
+  .contact-block-label { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .contact-block-value { font-size: 15px; color: var(--text); line-height: 1.7; }
+  .contact-block-value a { color: var(--navy); text-decoration: none; }
+  .contact-block-value a:hover { color: var(--gold); }
+
+  .social-links { display: flex; gap: 12px; margin-top: 32px; }
+  .social-link {
+    width: 44px; height: 44px; border-radius: 2px;
+    border: 1px solid rgba(15,32,68,.2);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; font-size: 16px;
+    color: var(--navy); transition: all .25s;
+  }
+  .social-link:hover { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+
+  .contact-form-wrap {
+    background: var(--navy-deep); border-radius: 4px;
+    padding: 40px 36px; border: 1px solid rgba(201,168,76,.2);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-deep);
+    border-top: 1px solid rgba(201,168,76,.2);
+    padding: 60px 5vw 32px;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;
+  }
+  .footer-brand .brand-mark { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--gold); margin-bottom: 12px; }
+  .footer-brand p { font-size: 13px; color: rgba(255,255,255,.4); line-height: 1.8; }
+  .footer-col-title { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 16px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a { font-size: 13px; color: rgba(255,255,255,.55); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.06); padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+  }
+  .footer-bottom p { font-size: 11px; color: rgba(255,255,255,.3); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(9,21,41,.9); z-index: 2000;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--navy-deep); border: 1px solid rgba(201,168,76,.25);
+    border-radius: 4px; max-width: 680px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    padding: 48px; position: relative;
+    animation: fadeIn .3s;
+  }
+  .modal-close {
+    position: absolute; top: 20px; right: 24px;
+    background: none; border: none; color: rgba(255,255,255,.5);
+    font-size: 24px; cursor: pointer; transition: color .2s; line-height: 1;
+  }
+  .modal-close:hover { color: var(--gold); }
+  .modal h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--white); margin-bottom: 8px; }
+  .modal-meta { font-size: 12px; color: rgba(255,255,255,.4); letter-spacing: .1em; margin-bottom: 28px; }
+  .modal-body { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.9; }
+  .modal-body p { margin-bottom: 16px; }
+
+  /* ── FACEBOOK CARDS ── */
+  .fb-post-card {
+    background: var(--white);
+    border: 1px solid rgba(15,32,68,.1);
+    border-radius: 4px;
+    padding: 20px;
+    cursor: pointer;
+    transition: box-shadow .25s, transform .25s;
+    margin-bottom: 16px;
+  }
+  .fb-post-card:hover { box-shadow: 0 8px 28px rgba(15,32,68,.12); transform: translateY(-2px); }
+  .fb-post-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .fb-post-card-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--gold); flex-shrink: 0;
+    letter-spacing: .05em;
+  }
+  .fb-post-card-name { font-weight: 600; font-size: 14px; color: var(--navy); }
+  .fb-post-card-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .fb-post-card-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 14px; }
+  .fb-post-card-footer { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); padding-top: 12px; border-top: 1px solid rgba(15,32,68,.06); }
+
+  /* ── SCROLL TO TOP ── */
+  .scroll-top {
+    position: fixed; bottom: 32px; right: 32px; z-index: 500;
+    width: 44px; height: 44px; background: var(--gold); color: var(--navy);
+    border: none; border-radius: 2px; cursor: pointer; font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(16px); transition: all .3s;
+    box-shadow: 0 4px 16px rgba(201,168,76,.4);
+  }
+  .scroll-top.visible { opacity: 1; transform: translateY(0); }
+  .scroll-top:hover { background: var(--gold-light); }
+
+  /* ── RESPONSIVE ── */
+  /* ── ACCORDION STATUTO ── */
+  .acc-item {
+    border-bottom: 1px solid rgba(201,168,76,.15);
+  }
+  .acc-item:first-child { border-top: 1px solid rgba(201,168,76,.15); border-radius: 4px 4px 0 0; }
+  .acc-item:last-child { border-radius: 0 0 4px 4px; }
+  .acc-header {
+    width: 100%; display: flex; align-items: center; gap: 20px;
+    padding: 20px 28px; background: rgba(255,255,255,.04);
+    border: none; cursor: pointer; text-align: left;
+    transition: background .2s;
+  }
+  .acc-header:hover { background: rgba(255,255,255,.08); }
+  .acc-item.open .acc-header { background: rgba(201,168,76,.08); }
+  .acc-num {
+    font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); white-space: nowrap; flex-shrink: 0; min-width: 50px;
+  }
+  .acc-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 18px;
+    color: var(--white); flex: 1;
+  }
+  .acc-icon {
+    font-size: 20px; color: var(--gold); flex-shrink: 0;
+    line-height: 1; transition: transform .2s;
+  }
+  .acc-body {
+    padding: 0 28px 24px 98px;
+    font-size: 14px; line-height: 1.9; color: rgba(255,255,255,.65);
+    animation: fadeIn .25s;
+  }
+  .acc-body p { margin-bottom: 12px; }
+  .acc-body ul { padding-left: 20px; margin-bottom: 12px; }
+  .acc-body ul li { margin-bottom: 6px; }
+
+  @media (max-width: 600px) {
+    .acc-body { padding: 0 20px 20px 20px; }
+    .acc-header { padding: 16px 20px; gap: 12px; }
+  }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-stats { position: static; margin-top: 48px; justify-content: flex-start; }
+    .about-grid, .membership-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    .events-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .statuto-grid { grid-template-columns: 1fr; }
+    .statuto-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; border-right: none; border-bottom: 1px solid rgba(201,168,76,.15); }
+    .statuto-nav-item { border-left: none; border-bottom: 2px solid transparent; padding: 8px 12px; font-size: 10px; }
+    .statuto-nav-item.active { border-bottom-color: var(--gold); border-left: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .mission-pillars { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    section { padding: 72px 6vw; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .modal { padding: 32px 24px; }
+    .statuto-content { padding: 24px 20px; }
+    .membership-form-wrap, .contact-form-wrap { padding: 28px 20px; }
+  }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5FRPES4R7D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-5FRPES4R7D');
+</script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-emblem">CT</div>
+    <div class="nav-wordmark">
+      <span class="cts">CT San Marino</span>
+      <span class="full">Comunità e Territorio</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#chi-siamo">Chi siamo</a></li>
+    <li><a href="#eventi">Eventi</a></li>
+    <li><a href="#social">Social</a></li>
+    <li><a href="#notizie">Notizie</a></li>
+    <li><a href="#" onclick="openArchivio(); return false;">Archivio</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+    <li><a href="#tesseramento" class="nav-cta">Iscriviti</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Apri menu" type="button">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#chi-siamo" class="mob-link">Chi siamo</a>
+  <a href="#eventi" class="mob-link">Eventi</a>
+  <a href="#social" class="mob-link">Social</a>
+  <a href="#notizie" class="mob-link">Notizie</a>
+  <a href="#" onclick="closeMobile(); openArchivio(); return false;">Archivio</a>
+  <a href="#contatti" onclick="closeMobile()">Contatti</a>
+  <a href="#tesseramento" onclick="closeMobile()" style="color:var(--gold)">Iscriviti →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Nata nel 2026 · Repubblica di San Marino</div>
+    <h1 class="hero-title">
+      Per la <em>comunità</em>,<br>per il <em>territorio</em>
+    </h1>
+    <p class="hero-subtitle">Comunità e Territorio San Marino</p>
+    <p class="hero-desc">
+      CT San Marino è una realtà associativa impegnata nella difesa dei diritti abitativi,
+      nel benessere delle famiglie e nella valorizzazione dell'identità territoriale
+      della Repubblica di San Marino.
+    </p>
+    <div class="hero-actions">
+      <a href="#tesseramento" class="btn btn-gold">Unisciti a noi ↓</a>
+      <a href="#chi-siamo" class="btn btn-outline">Scopri di più</a>
+      <a href="https://wa.me/393665730811" target="_blank" rel="noopener" class="btn" style="background:#25D366; color:#ffffff; display:inline-flex; align-items:center; gap:10px; border-radius:2px; padding:10px 22px; font-weight:600; letter-spacing:.06em; text-decoration:none; font-size:13px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.08c-.24.68-1.4 1.32-1.93 1.4-.5.08-1.12.11-1.8-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.19-1.58-1.19-3.02 0-1.44.75-2.14 1.02-2.43.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.14.07.14.12.31.02.5-.1.19-.15.31-.3.48-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.63-.14.26.1 1.63.77 1.91.91.29.14.48.21.55.33.07.12.07.69-.17 1.37z"/></svg>
+        Scrivici su WhatsApp
+      </a>
+    </div>
+    <div class="hero-stats" style="position:static; margin-top:60px; display:flex; gap:48px;">
+      <div class="stat">
+        <div class="stat-n">2026</div>
+        <div class="stat-l">Anno di fondazione</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">4</div>
+        <div class="stat-l">Aree di azione</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">RSM</div>
+        <div class="stat-l">Repubblica di San Marino</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHI SIAMO -->
+<section id="chi-siamo">
+  <div class="section-label">Chi siamo</div>
+  <h2 class="section-title">Una realtà associativa <em>nata dalla comunità</em></h2>
+  <p class="section-lead">
+    CT San Marino nasce dall'esigenza concreta di dare voce ai cittadini sammarinesi sui temi della casa, della famiglia e del territorio.
+  </p>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        Nata nel 2026, CT San Marino promuove partecipazione, confronto e proposta sui temi che incidono sulla vita della comunità.
+      </p>
+      <p>
+        La nostra missione è favorire il dialogo tra cittadini e istituzioni, sostenere politiche abitative eque, tutelare le famiglie in difficoltà e valorizzare l'identità culturale e territoriale della Repubblica di San Marino.
+      </p>
+      <p>
+        Operiamo senza fini di lucro, secondo principi di solidarietà, trasparenza e partecipazione.
+      </p>
+    </div>
+    <div>
+      <div style="margin-bottom: 20px;">
+        <div class="section-label" style="margin-bottom: 12px;">Coordinamento</div>
+        <div class="founders">
+          <div class="founder-card">
+            <img class="founder-photo" src="data:image/jpeg;base64,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" alt="Emiliano Pazzaglia">
+            <div class="founder-info">
+              <div class="name">Emiliano Pazzaglia</div>
+              <div class="role">Presidente</div>
+            </div>
+          </div>
+          <div class="founder-card">
+            <img class="founder-photo" src="data:image/jpeg;base64,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" alt="Valentina Pelliccioni">
+            <div class="founder-info">
+              <div class="name">Valentina Pelliccioni</div>
+              <div class="role">Segretario</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mission-pillars">
+    <div class="pillar">
+      <span class="pillar-icon">🏠</span>
+      <div class="pillar-title">Diritti Abitativi</div>
+      <p class="pillar-desc">Sostegno alle famiglie sammarinesi nell'accesso alla casa, monitoraggio dell'emergenza abitativa e proposte di riforma legislativa.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">👨‍👩‍👧‍👦</span>
+      <div class="pillar-title">Benessere Familiare</div>
+      <p class="pillar-desc">Tutela delle famiglie in difficoltà economica, supporto alle politiche sociali e promozione della coesione comunitaria.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">🏔️</span>
+      <div class="pillar-title">Territorio e Ambiente</div>
+      <p class="pillar-desc">Valorizzazione dell'identità territoriale del Titano, tutela ambientale e promozione di uno sviluppo sostenibile.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">🤝</span>
+      <div class="pillar-title">Partecipazione dei Cittadini</div>
+      <p class="pillar-desc">Dialogo costante con le istituzioni, promozione della cultura democratica e coinvolgimento attivo dei cittadini.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- EVENTI -->
+<section id="eventi">
+  <div class="section-label">Calendario</div>
+  <h2 class="section-title">Prossimi <em>eventi</em></h2>
+  <p class="section-lead">Assemblee, incontri pubblici, tavole rotonde e iniziative sul territorio sammarinese.</p>
+
+  <div class="events-grid" id="events-grid"></div>
+
+  <!-- BANNER PRESTO IN ARRIVO (visibile solo se non ci sono eventi) -->
+  <div id="events-empty-banner" style="display:none; margin-top:52px; text-align:center; padding:64px 24px; border:1px solid var(--border); border-radius:4px; background:linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%); position:relative; overflow:hidden;">
+    <div style="position:absolute; top:-60px; right:-60px; width:280px; height:280px; border-radius:50%; border:1px solid rgba(201,168,76,.1); pointer-events:none;"></div>
+    <div style="position:absolute; bottom:-40px; left:-40px; width:180px; height:180px; border-radius:50%; border:1px solid rgba(201,168,76,.07); pointer-events:none;"></div>
+
+    <div style="position:relative;">
+      <div style="font-size:48px; margin-bottom:20px;">📅</div>
+      <div style="font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:16px;">Presto in arrivo</div>
+      <h3 style="font-family:'Cormorant Garamond',serif; font-size:clamp(24px,4vw,40px); font-weight:300; color:var(--white); margin-bottom:16px; line-height:1.2;">
+        I nostri prossimi <em style="font-style:italic; color:var(--gold);">eventi</em><br>saranno annunciati a breve
+      </h3>
+      <p style="font-size:14px; color:rgba(255,255,255,.5); max-width:480px; margin:0 auto 32px; line-height:1.8;">
+        Seguici su Facebook o iscriviti all'associazione per ricevere tutti gli aggiornamenti sulle nostre iniziative sul territorio sammarinese.
+      </p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener" class="btn btn-gold">Seguici su Facebook →</a>
+        <a href="#tesseramento" class="btn btn-outline">Iscriviti all'associazione</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- FACEBOOK / SOCIAL -->
+<section id="social" style="background:var(--white);">
+  <div class="section-label">Seguici</div>
+  <h2 class="section-title">Siamo su <em>Facebook</em></h2>
+  <p class="section-lead">Resta aggiornato su tutte le nostre attività seguendo la pagina Facebook di CT San Marino.</p>
+
+  <!-- FB Page Plugin -->
+  <div style="display:flex; flex-wrap:wrap; gap:40px; align-items:flex-start; margin-top:48px;">
+
+    <!-- Colonna sinistra: Page plugin ufficiale FB -->
+    <div style="flex:1; min-width:280px; max-width:380px;">
+      <div id="fb-root"></div>
+      <div
+        class="fb-page"
+        data-href="https://www.facebook.com/share/1BtgAiWvY3/"
+        data-tabs="timeline"
+        data-width="380"
+        data-height="500"
+        data-small-header="true"
+        data-adapt-container-width="true"
+        data-hide-cover="false"
+        data-show-facepile="true">
+        <!-- Fallback se FB SDK non carica -->
+        <blockquote cite="https://www.facebook.com/share/1BtgAiWvY3/" class="fb-xfbml-parse-ignore">
+          <a href="https://www.facebook.com/share/1BtgAiWvY3/">CT San Marino – Comunità e Territorio San Marino</a>
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Colonna destra: post aggiuntivi manuali -->
+    <div style="flex:1; min-width:280px;" id="fb-posts-manual">
+      <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:16px;">Post in evidenza</div>
+
+      <!-- ISTRUZIONE PER AGGIORNARE: aggiungi qui sotto nuovi blocchi .fb-post-card con il link del post Facebook -->
+
+      <div class="fb-post-card" onclick="window.open('https://www.facebook.com/share/1BtgAiWvY3/','_blank')">
+        <div class="fb-post-card-header">
+          <div class="fb-post-card-avatar">CTS</div>
+          <div>
+            <div class="fb-post-card-name">CT San Marino</div>
+            <div class="fb-post-card-date">Comunità e Territorio San Marino</div>
+          </div>
+        </div>
+        <div class="fb-post-card-text">Segui la nostra pagina Facebook per restare aggiornato su eventi, comunicati e notizie dal territorio sammarinese.</div>
+        <div class="fb-post-card-footer">
+          <span>👍 Metti Mi Piace alla pagina</span>
+          <span style="color:var(--gold);">Vai alla pagina →</span>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; padding:20px; background:var(--navy-deep); border-radius:4px; border:1px solid rgba(201,168,76,.2);">
+        <div style="font-size:12px; color:rgba(255,255,255,.5); line-height:1.7; margin-bottom:12px;">
+          💡 <strong style="color:var(--gold-light);">Come aggiungere un post:</strong><br>
+          Copia il link di un post Facebook e chiedi di aggiungerlo qui come card.
+        </div>
+        <a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:10px 20px;">Apri la pagina Facebook →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ARCHIVIO COMUNICATI -->
+<section id="archivio-comunicati" style="background:var(--cream); text-align:center; padding-top:60px; padding-bottom:60px;">
+  <div class="section-label">Trasparenza</div>
+  <h2 class="section-title">Archivio <em>Comunicati</em></h2>
+  <p class="section-lead" style="margin-left:auto; margin-right:auto;">Consulta tutti i comunicati stampa ufficiali di CT San Marino, disponibili in formato PDF.</p>
+  <button onclick="openArchivio()" class="btn btn-gold" style="margin-top:28px;">Apri Archivio Comunicati →</button>
+</section>
+
+<!-- FB SDK — caricamento asincrono -->
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v19.0";
+  js.async = true; js.defer = true;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+<section id="tesseramento">
+  <div class="section-label">Unisciti a noi</div>
+  <h2 class="section-title">Unisciti a <em>noi</em></h2>
+  <p class="section-lead">
+    Iscrivendoti a CT San Marino contribuisci attivamente alla tutela dei diritti
+    della comunità sammarinese. Ogni voce conta.
+  </p>
+
+  <div class="membership-grid">
+    <div>
+      <div class="section-label" style="margin-bottom: 12px;">Tipologie di iscrizione</div>
+      <div class="membership-types">
+        <div class="membership-card">
+          <div class="mc-header">
+            <div class="mc-name">Socio Ordinario</div>
+            <div class="mc-price">Gratuito <span>/ anno</span></div>
+          </div>
+          <div class="mc-body">
+            <ul class="mc-features">
+              <li>Diritto di voto in assemblea</li>
+              <li>Accesso a tutti gli eventi</li>
+              <li>Newsletter e comunicati</li>
+              <li>Partecipazione ai gruppi di lavoro</li>
+              <li>Tessera associativa digitale</li>
+            </ul>
+          </div>
+        </div>
+        <div class="membership-card featured">
+          <div class="mc-header">
+            <div class="mc-name">Socio Sostenitore</div>
+            <div class="mc-price">Contributo libero <span>/ anno</span></div>
+          </div>
+          <div class="mc-body">
+            <ul class="mc-features">
+              <li>Tutti i benefici del Socio Ordinario</li>
+              <li>Menzione nei materiali associativi</li>
+              <li>Accesso anticipato a dossier e report</li>
+              <li>Inviti a incontri riservati ai sostenitori</li>
+              <li>Diploma di socio sostenitore</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="membership-form-wrap">
+      <div class="form-title">Modulo di iscrizione</div>
+      <form id="formContent" action="https://formspree.io/f/xwvwnlnr" method="POST">
+          <input type="hidden" name="_subject" value="Nuova iscrizione CT San Marino">
+          <input type="hidden" name="_next" value="https://ctsmsanmarino.netlify.app/grazie.html">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome *</label>
+              <input type="text" name="nome" placeholder="Il tuo nome" required>
+            </div>
+            <div class="form-group">
+              <label>Cognome *</label>
+              <input type="text" name="cognome" placeholder="Il tuo cognome" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" placeholder="la.tua@email.sm" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Telefono</label>
+              <input type="tel" name="telefono" placeholder="+378 / +39">
+            </div>
+            <div class="form-group">
+              <label>Tipologia socio *</label>
+              <select name="tipologia_socio" required>
+                <option value="">– Seleziona –</option>
+                <option value="Socio Ordinario (gratuito)">Socio Ordinario (gratuito)</option>
+                <option value="Socio Sostenitore (contributo libero)">Socio Sostenitore (contributo libero)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Indirizzo di residenza</label>
+            <input type="text" name="indirizzo" placeholder="Via / Strada, n°">
+          </div>
+          <div class="form-group">
+            <label>Comune di residenza</label>
+            <select name="castello">
+              <option value="">– Castello –</option>
+              <option>Acquaviva</option><option>Borgo Maggiore</option>
+              <option>Chiesanuova</option><option>Domagnano</option>
+              <option>Faetano</option><option>Fiorentino</option>
+              <option>Montegiardino</option><option>San Marino Città</option>
+              <option>Serravalle</option><option>Altro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Motivazione (facoltativo)</label>
+            <textarea name="motivazione" placeholder="Perché vuoi unirti a CT San Marino?"></textarea>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="f-privacy" name="privacy" value="accettato" required>
+            <label for="f-privacy">Ho letto e accetto l'<a href="#" onclick="openModal('privacy')">Informativa sulla Privacy</a> e acconsento al trattamento dei miei dati personali.</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="f-statuto" name="regolamento" value="accettato" required>
+            <label for="f-statuto">Dichiaro di aver letto il Regolamento associativo e di condividerne le finalità.</label>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Invia richiesta di iscrizione →</button>
+        </form>
+      <div class="form-success" id="formSuccess">
+        <div class="checkmark">✓</div>
+        <h4>Richiesta inviata!</h4>
+        <p>Grazie per aver scelto di unirti a CT San Marino.<br>
+        Riceverai una email di conferma entro 48 ore con tutti i dettagli per completare la tua iscrizione.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATTI -->
+<section id="contatti">
+  <div class="section-label">Siamo qui</div>
+  <h2 class="section-title">Scrivici o <em>incontriamoci</em></h2>
+  <p class="section-lead">CT San Marino è a disposizione dei cittadini. Contattaci per informazioni, segnalazioni o collaborazioni.</p>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-block">
+        <div class="contact-block-label">Email</div>
+        <div class="contact-block-value">
+          <a href="/cdn-cgi/l/email-protection#6b0804061e05021f0a1f0e1919021f04190204180a05060a190205042b0c060a020745080406">comunitaterritoriosanmarino&#64;gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block-label">Sede</div>
+        <div class="contact-block-value">
+          Repubblica di San Marino<br>
+          <em style="color:var(--text-muted); font-size:13px;">Sede operativa – su appuntamento</em>
+        </div>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block-label">Orari di disponibilità</div>
+        <div class="contact-block-value">
+          Lunedì – Venerdì: 17:00 – 20:00<br>
+          Sabato: 10:00 – 13:00
+        </div>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block-label">Seguici sui social</div>
+        <div class="social-links">
+          <a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener" class="social-link" title="Facebook">f</a>
+          <a href="https://www.instagram.com/comunitaterritoriosanmarino?igsh=eDhvOThkaTQ2emkz" target="_blank" rel="noopener" class="social-link" title="Instagram" style="font-style:italic">ig</a>
+        </div>
+      </div>
+
+      <div style="margin-top: 36px; padding: 24px; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: 4px; border-left: 3px solid var(--gold);">
+        <div style="font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Sportello di ascolto</div>
+        <p style="font-size: 14px; color: rgba(255,255,255,.7); line-height: 1.7;">Hai un problema abitativo o una segnalazione da fare? Il nostro sportello è a disposizione dei cittadini. Scrivici e ti risponderemo il prima possibile.</p>
+        <a href="/cdn-cgi/l/email-protection#4b2824263e25223f2a3f2e3939223f24392224382a25262a392225240b2c262a222765282426" class="btn btn-gold" style="margin-top: 16px; font-size: 11px; padding: 10px 20px;">Contatta lo sportello →</a>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap">
+      <div class="form-title" style="color:var(--white)">Scrivici</div>
+      <form id="contactFormContent" action="https://formspree.io/f/xwvwnlnr" method="POST">
+          <input type="hidden" name="_subject" value="Nuovo messaggio dal sito CT San Marino">
+          <input type="hidden" name="_next" value="https://ctsmsanmarino.netlify.app/grazie.html">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" name="nome" placeholder="Nome">
+            </div>
+            <div class="form-group">
+              <label>Cognome</label>
+              <input type="text" name="cognome" placeholder="Cognome">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" id="c-email" placeholder="la.tua@email.sm" required>
+          </div>
+          <div class="form-group">
+            <label>Oggetto</label>
+            <select name="oggetto" id="c-oggetto">
+              <option value="">– Seleziona –</option>
+              <option>Informazioni sull'associazione</option>
+              <option>Problema abitativo</option>
+              <option>Proposta di collaborazione</option>
+              <option>Segnalazione</option>
+              <option>Partecipazione a eventi</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Messaggio *</label>
+            <textarea name="messaggio" id="c-msg" placeholder="Descrivi la tua richiesta o segnalazione..." style="min-height:120px;" required></textarea>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="c-privacy" name="privacy" value="accettato" required>
+            <label for="c-privacy">Acconsento al trattamento dei miei dati personali ai sensi della normativa vigente.</label>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Invia messaggio →</button>
+        </form>
+      <div class="form-success" id="contactSuccess">
+        <div class="checkmark">✉️</div>
+        <h4>Messaggio inviato!</h4>
+        <p>Grazie per averci scritto. Ti risponderemo entro 2 giorni lavorativi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="brand-mark">CT San Marino</div>
+      <p>Comunità e Territorio San Marino – Associazione impegnata nella tutela dei diritti abitativi, del benessere familiare e dell'identità territoriale della Repubblica di San Marino.</p>
+      <p style="margin-top:12px"><a href="/cdn-cgi/l/email-protection#d0b3bfbda5beb9a4b1a4b5a2a2b9a4bfa2b9bfa3b1bebdb1a2b9bebf90b7bdb1b9bcfeb3bfbd" style="color:var(--gold); text-decoration:none; font-size:13px;">comunitaterritoriosanmarino&#64;gmail.com</a></p>
+    </div>
+    <div>
+      <div class="footer-col-title">Associazione</div>
+      <ul class="footer-links">
+        <li><a href="#chi-siamo">Chi siamo</a></li>
+        <li><a href="#tesseramento">Tesseramento</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Attività</div>
+      <ul class="footer-links">
+        <li><a href="#eventi">Eventi</a></li>
+        <li><a href="#notizie">Notizie</a></li>
+        <li><a href="#" onclick="openArchivio()">Comunicati</a></li>
+        <li><a href="#contatti">Sportello ascolto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legale</div>
+      <ul class="footer-links">
+        <li><a href="#" onclick="openModal('privacy')">Privacy Policy</a></li>
+        <li><a href="#" onclick="openModal('cookie')">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CT San Marino – Comunità e Territorio San Marino. Tutti i diritti riservati.</p>
+    <p style="color: rgba(255,255,255,.2);">Associazione senza scopo di lucro · Repubblica di San Marino</p>
+  </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModalDirect()">×</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function() {
+
+  // Forza l'apertura in cima alla pagina se non c'è un'ancora specifica nell'URL
+  window.addEventListener('load', function() {
+    if (!location.hash) { window.scrollTo(0, 0); }
+  });
+
+  // NAV SCROLL
+  window.addEventListener('scroll', function() {
+    var nav = document.getElementById('navbar');
+    var top = document.getElementById('scrollTop');
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+    if (top) top.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // HAMBURGER MENU
+  (function() {
+    var btn = document.getElementById('hamburger');
+    var menu = document.getElementById('mobileMenu');
+    if (!btn || !menu) return;
+
+    function openMenu() {
+      menu.style.display = 'flex';
+      btn.classList.add('open');
+    }
+    function closeMenu() {
+      menu.style.display = 'none';
+      btn.classList.remove('open');
+    }
+    function toggleMenu() {
+      if (menu.style.display === 'flex') { closeMenu(); } else { openMenu(); }
+    }
+
+    // Both click and touchstart for maximum Android compatibility
+    var touched = false;
+    btn.addEventListener('touchstart', function(e) {
+      touched = true;
+      e.preventDefault();
+      toggleMenu();
+    }, { passive: false });
+    btn.addEventListener('click', function(e) {
+      if (touched) { touched = false; return; }
+      toggleMenu();
+    });
+
+    // Close on link tap
+    var links = menu.querySelectorAll('a');
+    for (var i = 0; i < links.length; i++) {
+      links[i].addEventListener('click', function() { closeMenu(); });
+    }
+
+    window.closeMobile = closeMenu;
+  })();
+
+  // ============================================================
+  // ARCHIVIO COMUNICATI STAMPA — gestito dal pannello /admin
+  // ============================================================
+  var comunicatiArchive = [];
+
+  fetch('data/comunicati.json?_=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : { items: [] }; })
+    .then(function(data) { comunicatiArchive = (data.items || []).slice().reverse(); })
+    .catch(function() { comunicatiArchive = []; });
+
+  window.renderArchivioList = function(filter) {
+    filter = (filter || '').toLowerCase().trim();
+    var filtered = comunicatiArchive.filter(function(c) {
+      return c.title.toLowerCase().indexOf(filter) !== -1 || c.date.toLowerCase().indexOf(filter) !== -1;
+    });
+    var itemsHtml = '';
+    if (filtered.length === 0) {
+      itemsHtml = '<p style="color:var(--text-muted); padding:16px 0;">Nessun comunicato trovato.</p>';
+    } else {
+      for (var i = 0; i < filtered.length; i++) {
+        var c = filtered[i];
+        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);">' +
+          '<div>' +
+            '<div style="font-weight:600; color:var(--text);">' + c.title + '</div>' +
+            '<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">' + c.date + '</div>' +
+          '</div>' +
+          '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
+        '</div>';
+      }
+    }
+    document.getElementById('archivio-list').innerHTML = itemsHtml;
+  }
+
+  window.openArchivio = function() {
+    document.getElementById('modal-inner').innerHTML =
+      '<h3>Archivio Comunicati</h3>' +
+      '<div class="modal-meta">Tutti i comunicati stampa ufficiali di CT San Marino</div>' +
+      '<div class="modal-body">' +
+        '<input type="text" id="archivio-search" placeholder="Cerca per data o parola chiave..." oninput="renderArchivioList(this.value)" style="width:100%; padding:10px 14px; margin-bottom:16px; border:1px solid var(--border); border-radius:2px; font-size:14px; box-sizing:border-box;">' +
+        '<div id="archivio-list"></div>' +
+      '</div>';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderArchivioList('');
+  };
+
+  // ============================================================
+  // EVENTI — gestiti dal pannello /admin
+  // ============================================================
+  fetch('data/eventi.json?_=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : { items: [] }; })
+    .then(function(data) {
+      var items = data.items || [];
+      var grid = document.getElementById('events-grid');
+      var banner = document.getElementById('events-empty-banner');
+      if (items.length === 0) {
+        banner.style.display = 'block';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < items.length; i++) {
+        var e = items[i];
+        html += '<div class="event-card">' +
+          '<div class="event-date-band"><div class="event-day">' + (e.day || '•') + '</div>' +
+          '<div class="event-month-year"><div class="event-month">' + (e.month || '') + '</div><div class="event-year">' + (e.year || '') + '</div></div></div>' +
+          '<div class="event-body">' +
+            '<div class="event-category">' + (e.category || 'Evento') + '</div>' +
+            '<div class="event-title">' + e.title + '</div>' +
+            '<div class="event-desc">' + (e.description || '') + '</div>' +
+            '<div class="event-meta"><span>🕒 ' + (e.time || '') + '</span><span>📍 ' + (e.location || '') + '</span></div>' +
+          '</div>' +
+        '</div>';
+      }
+      grid.innerHTML = html;
+    })
+    .catch(function() {
+      document.getElementById('events-empty-banner').style.display = 'block';
+    });
+
+  // MODALS
+  var modalData = {
+    n1: { title: 'CT incontra il Segretario di Stato per il Territorio', meta: 'Comunicato \u00b7 Marzo 2026', body: '<p>Una delegazione di CT San Marino ha incontrato il Segretario di Stato per avviare un confronto istituzionale sull\u2019emergenza abitativa.</p>' },
+    n2: { title: 'I dati sull\u2019affitto a San Marino nel 2026', meta: 'Analisi CT \u00b7 Aprile 2026', body: '<p>Il mercato degli affitti ha registrato un incremento del 18-22% nelle zone pi\u00f9 richieste.</p>' },
+    n3: { title: 'Legge 64/2025: cosa cambia per le famiglie', meta: 'Normativa \u00b7 Marzo 2026', body: '<p>La Legge 64/2025 introduce modifiche al quadro normativo abitativo. CT monitora l\u2019attuazione e raccoglie segnalazioni dai cittadini.</p>' },
+    n4: { title: 'Apertura del tesseramento 2026', meta: 'Notizie \u00b7 Marzo 2026', body: '<p>CT San Marino ha aperto il tesseramento 2026. L\u2019iscrizione \u00e8 gratuita. Compila il modulo sul sito.</p>' },
+    privacy: { title: 'Informativa sulla Privacy', meta: 'Normativa RSM \u00b7 2026', body: '<p>CT San Marino tratta i dati personali nel rispetto della normativa sammarinese. I dati sono usati esclusivamente per la gestione associativa e non vengono ceduti a terzi. Per esercitare i tuoi diritti scrivi a comunitaterritoriosanmarino&#64;gmail.com</p>' },
+    cookie: { title: 'Cookie Policy', meta: '2026', body: '<p>Questo sito usa esclusivamente cookie tecnici. Nessun cookie di profilazione o tracciamento di terze parti.</p>' }
+  };
+
+  window.openModal = function(key) {
+    var d = modalData[key];
+    if (!d) return;
+    document.getElementById('modal-inner').innerHTML = '<h3>' + d.title + '</h3><div class="modal-meta">' + d.meta + '</div><div class="modal-body">' + d.body + '</div>';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeModalDirect = function() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('click', function(e) {
+    if (e.target === document.getElementById('modal-overlay')) window.closeModalDirect();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.closeModalDirect();
+  });
+
+  // FORM ISCRIZIONE — Formspree
+  window.submitForm = function() {
+    var nome = document.getElementById('f-nome').value.trim();
+    var cognome = document.getElementById('f-cognome').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var tipo = document.getElementById('f-tipo').value;
+    var privacy = document.getElementById('f-privacy').checked;
+    var statuto = document.getElementById('f-statuto').checked;
+    if (!nome || !cognome || !email || !tipo) {
+      alert('Compila i campi obbligatori: Nome, Cognome, Email e Tipologia socio.');
+      return;
+    }
+    if (!privacy || !statuto) {
+      alert('Accetta la Privacy Policy e il Regolamento per procedere.');
+      return;
+    }
+    var btn = document.querySelector('#formContent .btn-gold');
+    if (btn) { btn.textContent = 'Invio in corso...'; btn.disabled = true; }
+    var fd = new FormData();
+    fd.append('_subject', 'Nuova iscrizione CT San Marino');
+    fd.append('_replyto', email);
+    fd.append('tipo_modulo', 'Iscrizione');
+    fd.append('nome', nome);
+    fd.append('cognome', cognome);
+    fd.append('email', email);
+    fd.append('telefono', document.getElementById('f-tel').value.trim());
+    fd.append('tipologia_socio', tipo);
+    fd.append('indirizzo', document.getElementById('f-indirizzo').value.trim());
+    fd.append('castello', document.getElementById('f-castello').value);
+    fd.append('motivazione', document.getElementById('f-motivation').value.trim());
+    fetch('https://formspree.io/f/xwvwnlnr', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd
+    })
+    .then(function(r) {
+      if (r.ok) {
+        document.getElementById('formContent').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        alert('Errore nell\'invio. Scrivici a comunitaterritoriosanmarino@gmail.com');
+        if (btn) { btn.textContent = 'Invia richiesta di iscrizione \u2192'; btn.disabled = false; }
+      }
+    })
+    .catch(function() {
+      alert('Errore di connessione. Scrivici a comunitaterritoriosanmarino@gmail.com');
+      if (btn) { btn.textContent = 'Invia richiesta di iscrizione \u2192'; btn.disabled = false; }
+    });
+  };
+
+  // FORM CONTATTI — Formspree
+  window.submitContact = function() {
+    var email = document.getElementById('c-email').value.trim();
+    var msg = document.getElementById('c-msg').value.trim();
+    var privacy = document.getElementById('c-privacy').checked;
+    if (!email || !msg) { alert('Compila Email e Messaggio.'); return; }
+    if (!privacy) { alert('Accetta il trattamento dei dati per procedere.'); return; }
+    var btn2 = document.querySelector('#contactFormContent .btn-gold');
+    if (btn2) { btn2.textContent = 'Invio in corso...'; btn2.disabled = true; }
+    var fd2 = new FormData();
+    fd2.append('_subject', 'Nuovo messaggio dal sito CT San Marino');
+    fd2.append('_replyto', email);
+    fd2.append('nome', document.getElementById('c-nome') ? document.getElementById('c-nome').value.trim() : '');
+    fd2.append('email', email);
+    fd2.append('oggetto', document.getElementById('c-oggetto').value);
+    fd2.append('messaggio', msg);
+    fetch('https://formspree.io/f/xwvwnlnr', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd2
+    })
+    .then(function(r) {
+      if (r.ok) {
+        document.getElementById('contactFormContent').style.display = 'none';
+        document.getElementById('contactSuccess').style.display = 'block';
+      } else {
+        alert('Errore nell\'invio. Scrivici a comunitaterritoriosanmarino@gmail.com');
+        if (btn2) { btn2.textContent = 'Invia messaggio \u2192'; btn2.disabled = false; }
+      }
+    })
+    .catch(function() {
+      alert('Errore di connessione. Scrivici a comunitaterritoriosanmarino@gmail.com');
+      if (btn2) { btn2.textContent = 'Invia messaggio \u2192'; btn2.disabled = false; }
+    });
+  };
+})();
+</script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', function(user) {
+      if (!user) {
+        window.netlifyIdentity.on('login', function() {
+          document.location.href = '/admin/';
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>
