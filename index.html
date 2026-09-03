@@ -1213,14 +1213,14 @@
     });
     var itemsHtml = '';
     if (filtered.length === 0) {
-      itemsHtml = '<p style="color:var(--text-muted); padding:16px 0;">Nessun comunicato trovato.</p>';
+      itemsHtml = '<p style="color:rgba(255,255,255,.55); padding:16px 0;">Nessun comunicato trovato.</p>';
     } else {
       for (var i = 0; i < filtered.length; i++) {
         var c = filtered[i];
-        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);">' +
+        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
           '<div>' +
-            '<div style="font-weight:600; color:var(--text);">' + c.title + '</div>' +
-            '<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">' + c.date + '</div>' +
+            '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
+            '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
           '</div>' +
           '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
         '</div>';
