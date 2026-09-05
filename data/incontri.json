@@ -1,11 +1,13 @@
 {
   "items": [
     {
-      "title": "Incontro prova",
+      "title": "incontro prova",
       "date": "5 settembre 2026",
+      "pdf": "",
       "images": [
-        "/incontri/prove-aperte-a3.jpeg"
+        "https://static.cremonasera.it/cremonasera/Assets/Images/2026_09/04/201059/prove-aperte-a3.jpeg"
       ]
-    }
+    },
+    {}
   ]
 }
