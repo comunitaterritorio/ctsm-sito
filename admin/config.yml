@@ -46,3 +46,27 @@ collections:
               - { label: "Luogo", name: "location", widget: "string" }
               - { label: "Categoria (es. Assemblea, Incontro)", name: "category", widget: "string", required: false }
               - { label: "Descrizione", name: "description", widget: "text" }
+
+  - name: "incontri"
+    label: "I Nostri Incontri"
+    files:
+      - file: "data/incontri.json"
+        label: "Incontri"
+        name: "incontri"
+        media_folder: "incontri"
+        public_folder: "/incontri"
+        fields:
+          - label: "Incontri"
+            name: "items"
+            widget: "list"
+            label_singular: "Incontro"
+            summary: "{{title}} — {{date}}"
+            fields:
+              - { label: "Nome evento", name: "title", widget: "string" }
+              - { label: "Data (es. 20 Settembre 2026)", name: "date", widget: "string" }
+              - label: "Immagini della serata"
+                name: "images"
+                widget: "list"
+                required: false
+                field: { label: "Immagine", name: "image", widget: "image", media_library: { config: { multiple: false } } }
+              - { label: "PDF resoconto della serata", name: "pdf", widget: "file", required: false, media_library: { config: { multiple: false } } }

@@ -638,6 +638,7 @@
     <li><a href="#social">Social</a></li>
     <li><a href="#notizie">Notizie</a></li>
     <li><a href="#" onclick="openArchivio(); return false;">Archivio</a></li>
+    <li><a href="#" onclick="openIncontri(); return false;">Incontri</a></li>
     <li><a href="#contatti" class="nav-cta">Contattaci</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Apri menu" type="button">
@@ -652,6 +653,7 @@
   <a href="#social" class="mob-link">Social</a>
   <a href="#notizie" class="mob-link">Notizie</a>
   <a href="#" onclick="closeMobile(); openArchivio(); return false;">Archivio</a>
+  <a href="#" onclick="closeMobile(); openIncontri(); return false;">Incontri</a>
   <a href="#contatti" onclick="closeMobile()" style="color:var(--gold)">Contattaci →</a>
 </div>
 
@@ -863,6 +865,14 @@
   <button onclick="openArchivio()" class="btn btn-gold" style="margin-top:28px;">Apri Archivio Comunicati →</button>
 </section>
 
+<!-- I NOSTRI INCONTRI -->
+<section id="incontri" style="background:var(--white); text-align:center; padding-top:60px; padding-bottom:60px;">
+  <div class="section-label">Sul territorio</div>
+  <h2 class="section-title">I nostri <em>incontri</em></h2>
+  <p class="section-lead" style="margin-left:auto; margin-right:auto;">Rivivi le nostre serate ed eventi pubblici: foto e resoconto di ogni incontro.</p>
+  <button onclick="openIncontri()" class="btn btn-gold" style="margin-top:28px;">Apri I Nostri Incontri →</button>
+</section>
+
 <!-- FB SDK — caricamento asincrono -->
 <script>
 (function(d, s, id) {
@@ -884,6 +894,12 @@
 
   <div class="contact-grid">
     <div class="contact-info">
+      <div class="contact-block">
+        <div class="contact-block-label">Telefono / WhatsApp</div>
+        <div class="contact-block-value">
+          +39 366 573 0811
+        </div>
+      </div>
       <div class="contact-block">
         <div class="contact-block-label">Email</div>
         <div class="contact-block-value">
@@ -990,6 +1006,7 @@
         <li><a href="#eventi">Eventi</a></li>
         <li><a href="#notizie">Notizie</a></li>
         <li><a href="#" onclick="openArchivio()">Comunicati</a></li>
+        <li><a href="#" onclick="openIncontri()">Incontri</a></li>
         <li><a href="#contatti">Sportello ascolto</a></li>
       </ul>
     </div>
@@ -1118,6 +1135,64 @@
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
     renderArchivioList('');
+  };
+
+  // ============================================================
+  // I NOSTRI INCONTRI — gestito dal pannello /admin
+  // ============================================================
+  var incontriArchive = [];
+
+  fetch('data/incontri.json?_=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : { items: [] }; })
+    .then(function(data) { incontriArchive = (data.items || []).slice().reverse(); })
+    .catch(function() { incontriArchive = []; });
+
+  window.renderIncontriList = function(filter) {
+    filter = (filter || '').toLowerCase().trim();
+    var filtered = incontriArchive.filter(function(c) {
+      return c.title.toLowerCase().indexOf(filter) !== -1 || c.date.toLowerCase().indexOf(filter) !== -1;
+    });
+    var itemsHtml = '';
+    if (filtered.length === 0) {
+      itemsHtml = '<p style="color:rgba(255,255,255,.55); padding:16px 0;">Nessun incontro trovato.</p>';
+    } else {
+      for (var i = 0; i < filtered.length; i++) {
+        var c = filtered[i];
+        var imgs = c.images || [];
+        var gallery = '';
+        if (imgs.length > 0) {
+          gallery = '<div style="display:flex; gap:8px; overflow-x:auto; margin-top:12px; padding-bottom:4px;">';
+          for (var j = 0; j < imgs.length; j++) {
+            gallery += '<img src="' + imgs[j] + '" alt="' + c.title + '" style="height:90px; width:120px; object-fit:cover; border-radius:2px; flex-shrink:0; cursor:pointer;" onclick="window.open(\'' + imgs[j] + '\', \'_blank\')">';
+          }
+          gallery += '</div>';
+        }
+        itemsHtml += '<div style="padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
+          '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">' +
+            '<div>' +
+              '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
+              '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
+            '</div>' +
+            (c.pdf ? '<a href="' + c.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '') +
+          '</div>' +
+          gallery +
+        '</div>';
+      }
+    }
+    document.getElementById('incontri-list').innerHTML = itemsHtml;
+  }
+
+  window.openIncontri = function() {
+    document.getElementById('modal-inner').innerHTML =
+      '<h3>I Nostri Incontri</h3>' +
+      '<div class="modal-meta">Foto e resoconti delle nostre serate ed eventi pubblici</div>' +
+      '<div class="modal-body">' +
+        '<input type="text" id="incontri-search" placeholder="Cerca per data o parola chiave..." oninput="renderIncontriList(this.value)" style="width:100%; padding:10px 14px; margin-bottom:16px; border:1px solid var(--border); border-radius:2px; font-size:14px; box-sizing:border-box;">' +
+        '<div id="incontri-list"></div>' +
+      '</div>';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderIncontriList('');
   };
 
   // ============================================================
