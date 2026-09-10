@@ -639,6 +639,7 @@
     <li><a href="#notizie">Notizie</a></li>
     <li><a href="#" onclick="openArchivio(); return false;">Archivio</a></li>
     <li><a href="#" onclick="openIncontri(); return false;">Incontri</a></li>
+    <li><a href="#" onclick="openIstanze(); return false;">Istanze</a></li>
     <li><a href="#contatti" class="nav-cta">Contattaci</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Apri menu" type="button">
@@ -654,6 +655,7 @@
   <a href="#notizie" class="mob-link">Notizie</a>
   <a href="#" onclick="closeMobile(); openArchivio(); return false;">Archivio</a>
   <a href="#" onclick="closeMobile(); openIncontri(); return false;">Incontri</a>
+  <a href="#" onclick="closeMobile(); openIstanze(); return false;">Istanze d'Arengo</a>
   <a href="#contatti" onclick="closeMobile()" style="color:var(--gold)">Contattaci →</a>
 </div>
 
@@ -873,6 +875,14 @@
   <button onclick="openIncontri()" class="btn btn-gold" style="margin-top:28px;">Apri I Nostri Incontri →</button>
 </section>
 
+<!-- ISTANZE D'ARENGO -->
+<section id="istanze-arengo" style="background:var(--cream); text-align:center; padding-top:60px; padding-bottom:60px;">
+  <div class="section-label">Partecipazione</div>
+  <h2 class="section-title">Istanze d'<em>Arengo</em></h2>
+  <p class="section-lead" style="margin-left:auto; margin-right:auto;">Consulta tutte le Istanze d'Arengo presentate da CT San Marino, disponibili in formato PDF.</p>
+  <button onclick="openIstanze()" class="btn btn-gold" style="margin-top:28px;">Apri Istanze d'Arengo →</button>
+</section>
+
 <!-- FB SDK — caricamento asincrono -->
 <script>
 (function(d, s, id) {
@@ -1007,6 +1017,7 @@
         <li><a href="#notizie">Notizie</a></li>
         <li><a href="#" onclick="openArchivio()">Comunicati</a></li>
         <li><a href="#" onclick="openIncontri()">Incontri</a></li>
+        <li><a href="#" onclick="openIstanze()">Istanze d'Arengo</a></li>
         <li><a href="#contatti">Sportello ascolto</a></li>
       </ul>
     </div>
@@ -1193,6 +1204,52 @@
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
     renderIncontriList('');
+  };
+
+  // ============================================================
+  // ISTANZE D'ARENGO — gestite dal pannello /admin
+  // ============================================================
+  var istanzeArchive = [];
+
+  fetch('data/istanze.json?_=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : { items: [] }; })
+    .then(function(data) { istanzeArchive = (data.items || []).slice().reverse(); })
+    .catch(function() { istanzeArchive = []; });
+
+  window.renderIstanzeList = function(filter) {
+    filter = (filter || '').toLowerCase().trim();
+    var filtered = istanzeArchive.filter(function(c) {
+      return c.title.toLowerCase().indexOf(filter) !== -1 || c.date.toLowerCase().indexOf(filter) !== -1;
+    });
+    var itemsHtml = '';
+    if (filtered.length === 0) {
+      itemsHtml = '<p style="color:rgba(255,255,255,.55); padding:16px 0;">Nessuna istanza trovata.</p>';
+    } else {
+      for (var i = 0; i < filtered.length; i++) {
+        var c = filtered[i];
+        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
+          '<div>' +
+            '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
+            '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
+          '</div>' +
+          '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
+        '</div>';
+      }
+    }
+    document.getElementById('istanze-list').innerHTML = itemsHtml;
+  }
+
+  window.openIstanze = function() {
+    document.getElementById('modal-inner').innerHTML =
+      '<h3>Istanze d\'Arengo</h3>' +
+      '<div class="modal-meta">Tutte le Istanze d\'Arengo presentate da CT San Marino</div>' +
+      '<div class="modal-body">' +
+        '<input type="text" id="istanze-search" placeholder="Cerca per data o parola chiave..." oninput="renderIstanzeList(this.value)" style="width:100%; padding:10px 14px; margin-bottom:16px; border:1px solid var(--border); border-radius:2px; font-size:14px; box-sizing:border-box;">' +
+        '<div id="istanze-list"></div>' +
+      '</div>';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderIstanzeList('');
   };
 
   // ============================================================
