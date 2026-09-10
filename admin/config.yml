@@ -70,3 +70,22 @@ collections:
                 required: false
                 field: { label: "Immagine", name: "image", widget: "image", media_library: { config: { multiple: false } } }
               - { label: "PDF resoconto della serata", name: "pdf", widget: "file", required: false, media_library: { config: { multiple: false } } }
+
+  - name: "istanze"
+    label: "Istanze d'Arengo"
+    files:
+      - file: "data/istanze.json"
+        label: "Istanze"
+        name: "istanze"
+        media_folder: "istanze"
+        public_folder: "/istanze"
+        fields:
+          - label: "Istanze"
+            name: "items"
+            widget: "list"
+            label_singular: "Istanza"
+            summary: "{{title}} — {{date}}"
+            fields:
+              - { label: "Titolo", name: "title", widget: "string" }
+              - { label: "Data (es. 4 Settembre 2026)", name: "date", widget: "string" }
+              - { label: "File PDF", name: "file", widget: "file", media_library: { config: { multiple: false } } }
