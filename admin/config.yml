@@ -89,3 +89,23 @@ collections:
               - { label: "Titolo", name: "title", widget: "string" }
               - { label: "Data (es. 4 Settembre 2026)", name: "date", widget: "string" }
               - { label: "File PDF", name: "file", widget: "file", media_library: { config: { multiple: false } } }
+
+  - name: "post-evidenza"
+    label: "Post in Evidenza (Social)"
+    files:
+      - file: "data/post-in-evidenza.json"
+        label: "Post in evidenza"
+        name: "post-evidenza"
+        media_folder: "post-evidenza"
+        public_folder: "/post-evidenza"
+        fields:
+          - label: "Post"
+            name: "items"
+            widget: "list"
+            label_singular: "Post"
+            summary: "{{date}} — {{text}}"
+            fields:
+              - { label: "Testo del post", name: "text", widget: "text" }
+              - { label: "Data (es. 11 Settembre 2026)", name: "date", widget: "string" }
+              - { label: "Immagine (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } } }
+              - { label: "Link al post Facebook (facoltativo)", name: "link", widget: "string", required: false }
