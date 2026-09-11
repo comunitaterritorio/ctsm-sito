@@ -53,7 +53,7 @@ collections:
       - file: "data/incontri.json"
         label: "Incontri"
         name: "incontri"
-        media_folder: "incontri"
+        media_folder: "/incontri"
         public_folder: "/incontri"
         fields:
           - label: "Incontri"
@@ -77,7 +77,7 @@ collections:
       - file: "data/istanze.json"
         label: "Istanze"
         name: "istanze"
-        media_folder: "istanze"
+        media_folder: "/istanze"
         public_folder: "/istanze"
         fields:
           - label: "Istanze"
@@ -96,7 +96,7 @@ collections:
       - file: "data/post-in-evidenza.json"
         label: "Post in evidenza"
         name: "post-evidenza"
-        media_folder: "post-evidenza"
+        media_folder: "/post-evidenza"
         public_folder: "/post-evidenza"
         fields:
           - label: "Post"
