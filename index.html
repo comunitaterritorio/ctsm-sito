@@ -826,34 +826,10 @@
       </div>
     </div>
 
-    <!-- Colonna destra: post aggiuntivi manuali -->
+    <!-- Colonna destra: post in evidenza (gestiti dal pannello /admin) -->
     <div style="flex:1; min-width:280px;" id="fb-posts-manual">
       <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:16px;">Post in evidenza</div>
-
-      <!-- ISTRUZIONE PER AGGIORNARE: aggiungi qui sotto nuovi blocchi .fb-post-card con il link del post Facebook -->
-
-      <div class="fb-post-card" onclick="window.open('https://www.facebook.com/share/1BtgAiWvY3/','_blank')">
-        <div class="fb-post-card-header">
-          <div class="fb-post-card-avatar">CTS</div>
-          <div>
-            <div class="fb-post-card-name">CT San Marino</div>
-            <div class="fb-post-card-date">Comunità e Territorio San Marino</div>
-          </div>
-        </div>
-        <div class="fb-post-card-text">Segui la nostra pagina Facebook per restare aggiornato su eventi, comunicati e notizie dal territorio sammarinese.</div>
-        <div class="fb-post-card-footer">
-          <span>👍 Metti Mi Piace alla pagina</span>
-          <span style="color:var(--gold);">Vai alla pagina →</span>
-        </div>
-      </div>
-
-      <div style="margin-top:20px; padding:20px; background:var(--navy-deep); border-radius:4px; border:1px solid rgba(201,168,76,.2);">
-        <div style="font-size:12px; color:rgba(255,255,255,.5); line-height:1.7; margin-bottom:12px;">
-          💡 <strong style="color:var(--gold-light);">Come aggiungere un post:</strong><br>
-          Copia il link di un post Facebook e chiedi di aggiungerlo qui come card.
-        </div>
-        <a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:10px 20px;">Apri la pagina Facebook →</a>
-      </div>
+      <div id="post-evidenza-list"></div>
     </div>
 
   </div>
@@ -1251,6 +1227,46 @@
     document.body.style.overflow = 'hidden';
     renderIstanzeList('');
   };
+
+  // ============================================================
+  // POST IN EVIDENZA (sezione Social) — gestiti dal pannello /admin
+  // ============================================================
+  fetch('data/post-in-evidenza.json?_=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : { items: [] }; })
+    .then(function(data) {
+      var items = (data.items || []).slice().reverse();
+      var container = document.getElementById('post-evidenza-list');
+      if (!container) return;
+      if (items.length === 0) {
+        container.innerHTML =
+          '<div class="fb-post-card" onclick="window.open(\'https://www.facebook.com/share/1BtgAiWvY3/\',\'_blank\')">' +
+            '<div class="fb-post-card-header">' +
+              '<div class="fb-post-card-avatar">CTS</div>' +
+              '<div><div class="fb-post-card-name">CT San Marino</div><div class="fb-post-card-date">Comunità e Territorio San Marino</div></div>' +
+            '</div>' +
+            '<div class="fb-post-card-text">Segui la nostra pagina Facebook per restare aggiornato su eventi, comunicati e notizie dal territorio sammarinese.</div>' +
+            '<div class="fb-post-card-footer"><span>👍 Metti Mi Piace alla pagina</span><span style="color:var(--gold);">Vai alla pagina →</span></div>' +
+          '</div>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < items.length; i++) {
+        var post = items[i];
+        var link = post.link || 'https://www.facebook.com/share/1BtgAiWvY3/';
+        var img = post.image ? '<img src="' + post.image + '" alt="" style="width:100%; border-radius:4px; margin-bottom:12px; display:block;">' : '';
+        html += '<div class="fb-post-card" onclick="window.open(\'' + link + '\',\'_blank\')" style="margin-bottom:16px;">' +
+          '<div class="fb-post-card-header">' +
+            '<div class="fb-post-card-avatar">CTS</div>' +
+            '<div><div class="fb-post-card-name">CT San Marino</div><div class="fb-post-card-date">' + (post.date || '') + '</div></div>' +
+          '</div>' +
+          img +
+          '<div class="fb-post-card-text">' + (post.text || '') + '</div>' +
+          '<div class="fb-post-card-footer"><span>👍 Metti Mi Piace alla pagina</span><span style="color:var(--gold);">Vai al post →</span></div>' +
+        '</div>';
+      }
+      container.innerHTML = html;
+    })
+    .catch(function() {});
 
   // ============================================================
   // EVENTI — gestiti dal pannello /admin
