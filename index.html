@@ -4,6 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CT San Marino – Comunità e Territorio San Marino</title>
+<meta name="description" content="Comunità e Territorio San Marino (CTSM) è il Gruppo Civico impegnato nella difesa dei diritti abitativi, nel benessere delle famiglie e nella valorizzazione del territorio della Repubblica di San Marino.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+<meta name="theme-color" content="#0f2044">
+
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ctsmsanmarino.netlify.app/">
+<meta property="og:title" content="Comunità e Territorio San Marino">
+<meta property="og:description" content="Il Gruppo Civico impegnato nella difesa dei diritti abitativi, nel benessere delle famiglie e nella valorizzazione del territorio della Repubblica di San Marino.">
+<meta property="og:image" content="https://ctsmsanmarino.netlify.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="it_IT">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Comunità e Territorio San Marino">
+<meta name="twitter:description" content="Il Gruppo Civico impegnato nella difesa dei diritti abitativi, nel benessere delle famiglie e nella valorizzazione del territorio della Repubblica di San Marino.">
+<meta name="twitter:image" content="https://ctsmsanmarino.netlify.app/og-image.jpg">
+
 <script>
   // Evita che il browser riapra la pagina a metà scroll (memoria di navigazione / link con #ancora)
   if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
@@ -264,6 +291,29 @@
   .pillar-icon { font-size: 28px; margin-bottom: 16px; display: block; transition: color .25s; color: var(--navy); }
   .pillar-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 10px; transition: color .25s; }
   .pillar-desc { font-size: 13px; line-height: 1.7; color: var(--text-muted); transition: color .25s; }
+  .pillar { cursor: pointer; }
+
+  /* ── PILLAR OVERLAY (pagine di approfondimento) ── */
+  .pillar-overlay {
+    position: fixed; inset: 0; z-index: 4000; background: var(--cream);
+    display: none; overflow-y: auto;
+  }
+  .pillar-overlay.open { display: block; }
+  .pillar-overlay-close-top {
+    position: sticky; top: 0; z-index: 10; display: flex; justify-content: flex-end;
+    padding: 20px 24px; background: linear-gradient(var(--cream) 60%, transparent);
+  }
+  .pillar-overlay-close-top button {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(15,32,68,.15);
+    background: var(--white); color: var(--navy); font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pillar-overlay-inner { max-width: 720px; margin: 0 auto; padding: 0 24px 80px; }
+  .pillar-overlay-icon { font-size: 44px; margin-bottom: 20px; display: block; }
+  .pillar-overlay-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px,5vw,44px); font-weight:600; color: var(--navy); margin-bottom: 24px; }
+  .pillar-overlay-body { font-size: 15px; line-height: 1.9; color: var(--text-muted); }
+  .pillar-overlay-body p { margin-bottom: 18px; }
+  .pillar-overlay-footer { max-width: 720px; margin: 40px auto 0; padding: 0 24px; }
 
   /* ── STATUTO ── */
   #statuto { background: var(--navy-deep); color: var(--white); }
@@ -375,6 +425,11 @@
   .form-success .checkmark { font-size: 48px; color: var(--gold); margin-bottom: 16px; }
   .form-success p { color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.7; }
   .form-success h4 { color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 10px; }
+
+  /* ── NUMERI ── */
+  .numero-stat { min-width:180px; }
+  .numero-valore { font-family:'Cormorant Garamond',serif; font-size:56px; font-weight:600; color:var(--gold); line-height:1; }
+  .numero-label { margin-top:10px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.6); }
 
   /* ── EVENTI ── */
   #eventi { background: var(--cream); }
@@ -611,17 +666,59 @@
     .statuto-content { padding: 24px 20px; }
     .membership-form-wrap, .contact-form-wrap { padding: 28px 20px; }
   }
+
+  /* ── COOKIE BANNER ── */
+  #cookie-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 3000;
+    background: var(--navy-deep); color: #fff;
+    padding: 22px 24px; box-shadow: 0 -6px 24px rgba(0,0,0,.25);
+    display: none;
+  }
+  #cookie-banner.show { display: block; }
+  .cookie-inner {
+    max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .cookie-text { flex: 1; min-width: 260px; font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.75); }
+  .cookie-text a { color: var(--gold); text-decoration: underline; }
+  .cookie-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cookie-btn { padding: 10px 22px; border-radius: 2px; font-size: 12px; font-weight: 600; letter-spacing: .06em; cursor: pointer; border: none; text-transform: uppercase; }
+  .cookie-btn.accept { background: var(--gold); color: var(--navy-deep); }
+  .cookie-btn.reject { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.3); }
+  @media (max-width: 600px) {
+    .cookie-inner { flex-direction: column; align-items: stretch; }
+    .cookie-actions { justify-content: stretch; }
+    .cookie-btn { flex: 1; }
+  }
 </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5FRPES4R7D"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-5FRPES4R7D');
+  // Google Analytics e SDK Facebook vengono caricati SOLO dopo il consenso ai cookie
+  window.loadAnalytics = function() {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-5FRPES4R7D';
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'G-5FRPES4R7D');
+  };
 </script>
 </head>
 <body>
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      Questo sito utilizza cookie tecnici necessari al funzionamento e, solo previo consenso, cookie di Google Analytics (statistiche di visita) e del plugin Facebook (contenuti social integrati). Puoi consultare la nostra <a href="#" onclick="openModal('cookie'); return false;">Cookie Policy</a> per maggiori dettagli.
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn reject" onclick="setCookieConsent(false)">Solo tecnici</button>
+      <button class="cookie-btn accept" onclick="setCookieConsent(true)">Accetta tutti</button>
+    </div>
+  </div>
+</div>
 
 <!-- NAVBAR -->
 <nav id="navbar">
@@ -637,9 +734,7 @@
     <li><a href="#eventi">Eventi</a></li>
     <li><a href="#social">Social</a></li>
     <li><a href="#notizie">Notizie</a></li>
-    <li><a href="#" onclick="openArchivio(); return false;">Archivio</a></li>
-    <li><a href="#" onclick="openIncontri(); return false;">Incontri</a></li>
-    <li><a href="#" onclick="openIstanze(); return false;">Istanze</a></li>
+    <li><a href="#" onclick="openRicercaGlobale(); return false;">🔍 Cerca</a></li>
     <li><a href="#contatti" class="nav-cta">Contattaci</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Apri menu" type="button">
@@ -653,9 +748,7 @@
   <a href="#eventi" class="mob-link">Eventi</a>
   <a href="#social" class="mob-link">Social</a>
   <a href="#notizie" class="mob-link">Notizie</a>
-  <a href="#" onclick="closeMobile(); openArchivio(); return false;">Archivio</a>
-  <a href="#" onclick="closeMobile(); openIncontri(); return false;">Incontri</a>
-  <a href="#" onclick="closeMobile(); openIstanze(); return false;">Istanze d'Arengo</a>
+  <a href="#" onclick="closeMobile(); openRicercaGlobale(); return false;">🔍 Cerca</a>
   <a href="#contatti" onclick="closeMobile()" style="color:var(--gold)">Contattaci →</a>
 </div>
 
@@ -742,25 +835,43 @@
   </div>
 
   <div class="mission-pillars">
-    <div class="pillar">
+    <div class="pillar" onclick="openPillar('abitativi')">
       <span class="pillar-icon">🏠</span>
       <div class="pillar-title">Diritti Abitativi</div>
       <p class="pillar-desc">Sostegno alle famiglie sammarinesi nell'accesso alla casa, monitoraggio dell'emergenza abitativa e proposte di riforma legislativa.</p>
     </div>
-    <div class="pillar">
+    <div class="pillar" onclick="openPillar('famiglia')">
       <span class="pillar-icon">👨‍👩‍👧‍👦</span>
       <div class="pillar-title">Benessere Familiare</div>
       <p class="pillar-desc">Tutela delle famiglie in difficoltà economica, supporto alle politiche sociali e promozione della coesione comunitaria.</p>
     </div>
-    <div class="pillar">
+    <div class="pillar" onclick="openPillar('territorio')">
       <span class="pillar-icon">🏔️</span>
       <div class="pillar-title">Territorio e Ambiente</div>
       <p class="pillar-desc">Valorizzazione dell'identità territoriale del Titano, tutela ambientale e promozione di uno sviluppo sostenibile.</p>
     </div>
-    <div class="pillar">
+    <div class="pillar" onclick="openPillar('partecipazione')">
       <span class="pillar-icon">🤝</span>
       <div class="pillar-title">Partecipazione dei Cittadini</div>
       <p class="pillar-desc">Dialogo costante con le istituzioni, promozione della cultura democratica e coinvolgimento attivo dei cittadini.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NUMERI / TRASPARENZA -->
+<section id="numeri" style="background:var(--navy); padding-top:56px; padding-bottom:56px;">
+  <div style="max-width:900px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; gap:48px; text-align:center; padding:0 20px;">
+    <div class="numero-stat">
+      <div class="numero-valore" data-target="0" id="numero-comunicati">0</div>
+      <div class="numero-label">Comunicati pubblicati</div>
+    </div>
+    <div class="numero-stat">
+      <div class="numero-valore" data-target="0" id="numero-istanze">0</div>
+      <div class="numero-label">Istanze d'Arengo presentate</div>
+    </div>
+    <div class="numero-stat">
+      <div class="numero-valore" data-target="0" id="numero-incontri">0</div>
+      <div class="numero-label">Incontri sul territorio</div>
     </div>
   </div>
 </section>
@@ -835,6 +946,31 @@
   </div>
 </section>
 
+<!-- NEWSLETTER -->
+<section id="newsletter" style="background:var(--navy); text-align:center; padding-top:64px; padding-bottom:64px; position:relative; overflow:hidden;">
+  <div style="position:absolute; top:-80px; left:-80px; width:220px; height:220px; border-radius:50%; border:1px solid rgba(201,168,76,.12); pointer-events:none;"></div>
+  <div style="position:absolute; bottom:-100px; right:-60px; width:260px; height:260px; border-radius:50%; border:1px solid rgba(201,168,76,.08); pointer-events:none;"></div>
+
+  <div style="position:relative; max-width:560px; margin:0 auto; padding:0 20px;">
+    <div style="font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px;">Resta aggiornato</div>
+    <h2 class="section-title" style="color:var(--white);">Iscriviti alla <em style="color:var(--gold); font-style:italic;">newsletter</em></h2>
+    <p style="font-size:14px; color:rgba(255,255,255,.6); line-height:1.8; margin-bottom:32px;">
+      Ricevi comunicati, eventi e istanze direttamente nella tua casella email, senza dipendere dai social.
+    </p>
+
+    <form id="newsletterForm" onsubmit="event.preventDefault(); submitNewsletter();" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <input type="email" id="nl-email" required placeholder="La tua email" style="flex:1; min-width:220px; padding:14px 18px; border-radius:2px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); color:#fff; font-size:14px;">
+      <button type="submit" class="btn btn-gold" style="white-space:nowrap;">Iscrivimi →</button>
+    </form>
+    <div id="newsletterSuccess" style="display:none; margin-top:20px; padding:16px; background:rgba(201,168,76,.12); border:1px solid rgba(201,168,76,.3); border-radius:4px; color:var(--gold-light,#e2c97a); font-size:14px;">
+      ✓ Iscrizione ricevuta! Controlla la tua email di conferma.
+    </div>
+    <p style="font-size:11px; color:rgba(255,255,255,.4); margin-top:16px;">
+      Puoi disiscriverti in qualsiasi momento. Consulta la nostra <a href="#" onclick="openModal('privacy')" style="color:rgba(255,255,255,.6); text-decoration:underline;">Informativa Privacy</a>.
+    </p>
+  </div>
+</section>
+
 <!-- ARCHIVIO COMUNICATI -->
 <section id="archivio-comunicati" style="background:var(--cream); text-align:center; padding-top:60px; padding-bottom:60px;">
   <div class="section-label">Trasparenza</div>
@@ -859,16 +995,18 @@
   <button onclick="openIstanze()" class="btn btn-gold" style="margin-top:28px;">Apri Istanze d'Arengo →</button>
 </section>
 
-<!-- FB SDK — caricamento asincrono -->
+<!-- FB SDK — caricato SOLO dopo consenso ai cookie -->
 <script>
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v19.0";
-  js.async = true; js.defer = true;
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
+  window.loadFacebookSDK = function(d, s, id) {
+    if (window.__fbLoaded) return;
+    window.__fbLoaded = true;
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v19.0";
+    js.async = true; js.defer = true;
+    fjs.parentNode.insertBefore(js, fjs);
+  };
 </script>
 
 
@@ -983,6 +1121,7 @@
       <div class="footer-col-title">Associazione</div>
       <ul class="footer-links">
         <li><a href="#chi-siamo">Chi siamo</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
         <li><a href="#contatti">Contatti</a></li>
       </ul>
     </div>
@@ -1019,6 +1158,21 @@
   <div class="modal" id="modal-box">
     <button class="modal-close" onclick="closeModalDirect()">×</button>
     <div id="modal-inner"></div>
+  </div>
+</div>
+
+<!-- PILLAR OVERLAY: pagine di approfondimento sui campi di azione -->
+<div class="pillar-overlay" id="pillar-overlay">
+  <div class="pillar-overlay-close-top">
+    <button onclick="closePillar()" aria-label="Chiudi">×</button>
+  </div>
+  <div class="pillar-overlay-inner">
+    <span class="pillar-overlay-icon" id="pillar-overlay-icon"></span>
+    <h2 class="pillar-overlay-title" id="pillar-overlay-title"></h2>
+    <div class="pillar-overlay-body" id="pillar-overlay-body"></div>
+  </div>
+  <div class="pillar-overlay-footer">
+    <button class="btn btn-outline" onclick="closePillar()">Chiudi</button>
   </div>
 </div>
 
@@ -1081,12 +1235,57 @@
   // ============================================================
   // ARCHIVIO COMUNICATI STAMPA — gestito dal pannello /admin
   // ============================================================
+  // ============================================================
+  // NUMERI / TRASPARENZA — conteggio automatico e animazione allo scroll
+  // ============================================================
+  var numeriReady = { comunicati: false, istanze: false, incontri: false };
+  var numeriSectionVisible = false;
+  var numeriAnimated = false;
+
+  function animateNumero(el, target) {
+    var start = 0;
+    var duration = 900;
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      el.textContent = Math.round(start + (target - start) * progress);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  window.tryAnimateNumeri = function() {
+    if (numeriAnimated || !numeriSectionVisible) return;
+    if (!numeriReady.comunicati || !numeriReady.istanze || !numeriReady.incontri) return;
+    numeriAnimated = true;
+    animateNumero(document.getElementById('numero-comunicati'), comunicatiArchive.length);
+    animateNumero(document.getElementById('numero-istanze'), istanzeArchive.length);
+    animateNumero(document.getElementById('numero-incontri'), incontriArchive.length);
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var sez = document.getElementById('numeri');
+    if (!sez || !('IntersectionObserver' in window)) { numeriSectionVisible = true; return; }
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          numeriSectionVisible = true;
+          tryAnimateNumeri();
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    obs.observe(sez);
+  });
+
   var comunicatiArchive = [];
 
   fetch('data/comunicati.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
-    .then(function(data) { comunicatiArchive = (data.items || []).slice().reverse(); })
-    .catch(function() { comunicatiArchive = []; });
+    .then(function(data) { comunicatiArchive = (data.items || []).slice().reverse(); numeriReady.comunicati = true; tryAnimateNumeri(); })
+    .catch(function() { comunicatiArchive = []; numeriReady.comunicati = true; tryAnimateNumeri(); });
 
   window.renderArchivioList = function(filter) {
     filter = (filter || '').toLowerCase().trim();
@@ -1111,6 +1310,37 @@
     document.getElementById('archivio-list').innerHTML = itemsHtml;
   }
 
+  // ============================================================
+  // CONSENSO COOKIE
+  // ============================================================
+  window.setCookieConsent = function(analyticsAccepted) {
+    try { localStorage.setItem('ctsm-cookie-consent', analyticsAccepted ? 'all' : 'essential'); } catch (e) {}
+    document.getElementById('cookie-banner').classList.remove('show');
+    if (analyticsAccepted) {
+      loadAnalytics();
+      loadFacebookSDK(document, 'script', 'facebook-jssdk');
+    }
+  };
+
+  window.reopenCookieBanner = function() {
+    closeModalDirect();
+    document.getElementById('cookie-banner').classList.add('show');
+  };
+
+  (function initCookieConsent() {
+    var consent = null;
+    try { consent = localStorage.getItem('ctsm-cookie-consent'); } catch (e) {}
+    if (consent === 'all') {
+      loadAnalytics();
+      loadFacebookSDK(document, 'script', 'facebook-jssdk');
+    } else if (consent === null) {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('cookie-banner').classList.add('show');
+      });
+    }
+    // Se 'essential': non si carica nulla di terze parti, il banner non ricompare
+  })();
+
   window.openArchivio = function() {
     document.getElementById('modal-inner').innerHTML =
       '<h3>Archivio Comunicati</h3>' +
@@ -1131,8 +1361,8 @@
 
   fetch('data/incontri.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
-    .then(function(data) { incontriArchive = (data.items || []).slice().reverse(); })
-    .catch(function() { incontriArchive = []; });
+    .then(function(data) { incontriArchive = (data.items || []).slice().reverse(); numeriReady.incontri = true; tryAnimateNumeri(); })
+    .catch(function() { incontriArchive = []; numeriReady.incontri = true; tryAnimateNumeri(); });
 
   window.renderIncontriList = function(filter) {
     filter = (filter || '').toLowerCase().trim();
@@ -1189,8 +1419,8 @@
 
   fetch('data/istanze.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
-    .then(function(data) { istanzeArchive = (data.items || []).slice().reverse(); })
-    .catch(function() { istanzeArchive = []; });
+    .then(function(data) { istanzeArchive = (data.items || []).slice().reverse(); numeriReady.istanze = true; tryAnimateNumeri(); })
+    .catch(function() { istanzeArchive = []; numeriReady.istanze = true; tryAnimateNumeri(); });
 
   window.renderIstanzeList = function(filter) {
     filter = (filter || '').toLowerCase().trim();
@@ -1226,6 +1456,84 @@
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
     renderIstanzeList('');
+  };
+
+  // ============================================================
+  // RICERCA GLOBALE — cerca tra Comunicati, Istanze d'Arengo e Incontri insieme
+  // ============================================================
+  function ricercaRow(title, date, actionHtml, gallery) {
+    return '<div style="padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
+      '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">' +
+        '<div>' +
+          '<div style="font-weight:600; color:#ffffff;">' + title + '</div>' +
+          '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + date + '</div>' +
+        '</div>' +
+        actionHtml +
+      '</div>' +
+      (gallery || '') +
+    '</div>';
+  }
+
+  window.renderRicercaGlobale = function(filter) {
+    filter = (filter || '').toLowerCase().trim();
+    function matches(c) { return c.title.toLowerCase().indexOf(filter) !== -1 || c.date.toLowerCase().indexOf(filter) !== -1; }
+
+    var comunicatiRes = comunicatiArchive.filter(matches);
+    var istanzeRes = istanzeArchive.filter(matches);
+    var incontriRes = incontriArchive.filter(matches);
+    var totale = comunicatiRes.length + istanzeRes.length + incontriRes.length;
+
+    var html = '';
+
+    if (totale === 0) {
+      html = '<p style="color:rgba(255,255,255,.55); padding:16px 0;">Nessun risultato trovato.</p>';
+    } else {
+      if (comunicatiRes.length) {
+        html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Comunicati (' + comunicatiRes.length + ')</div>';
+        for (var i = 0; i < comunicatiRes.length; i++) {
+          var c = comunicatiRes[i];
+          html += ricercaRow(c.title, c.date, '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>');
+        }
+      }
+      if (istanzeRes.length) {
+        html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Istanze d\'Arengo (' + istanzeRes.length + ')</div>';
+        for (var j = 0; j < istanzeRes.length; j++) {
+          var s = istanzeRes[j];
+          html += ricercaRow(s.title, s.date, '<a href="' + s.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>');
+        }
+      }
+      if (incontriRes.length) {
+        html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Incontri (' + incontriRes.length + ')</div>';
+        for (var k = 0; k < incontriRes.length; k++) {
+          var e = incontriRes[k];
+          var imgs = e.images || [];
+          var gallery = '';
+          if (imgs.length > 0) {
+            gallery = '<div style="display:flex; gap:8px; overflow-x:auto; margin-top:12px; padding-bottom:4px;">';
+            for (var m = 0; m < imgs.length; m++) {
+              gallery += '<img src="' + imgs[m] + '" alt="' + e.title + '" style="height:70px; width:100px; object-fit:cover; border-radius:2px; flex-shrink:0; cursor:pointer;" onclick="window.open(\'' + imgs[m] + '\', \'_blank\')">';
+            }
+            gallery += '</div>';
+          }
+          var action = e.pdf ? '<a href="' + e.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '';
+          html += ricercaRow(e.title, e.date, action, gallery);
+        }
+      }
+    }
+    document.getElementById('ricerca-globale-list').innerHTML = html;
+  };
+
+  window.openRicercaGlobale = function() {
+    document.getElementById('modal-inner').innerHTML =
+      '<h3>Cerca nel sito</h3>' +
+      '<div class="modal-meta">Cerca insieme tra Comunicati, Istanze d\'Arengo e Incontri</div>' +
+      '<div class="modal-body">' +
+        '<input type="text" id="ricerca-globale-search" placeholder="Cerca per data o parola chiave..." oninput="renderRicercaGlobale(this.value)" style="width:100%; padding:10px 14px; margin-bottom:8px; border:1px solid var(--border); border-radius:2px; font-size:14px; box-sizing:border-box;">' +
+        '<div id="ricerca-globale-list"></div>' +
+      '</div>';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderRicercaGlobale('');
   };
 
   // ============================================================
@@ -1307,7 +1615,7 @@
     n2: { title: 'I dati sull\u2019affitto a San Marino nel 2026', meta: 'Analisi CT \u00b7 Aprile 2026', body: '<p>Il mercato degli affitti ha registrato un incremento del 18-22% nelle zone pi\u00f9 richieste.</p>' },
     n3: { title: 'Legge 64/2025: cosa cambia per le famiglie', meta: 'Normativa \u00b7 Marzo 2026', body: '<p>La Legge 64/2025 introduce modifiche al quadro normativo abitativo. CT monitora l\u2019attuazione e raccoglie segnalazioni dai cittadini.</p>' },
     privacy: { title: 'Informativa sulla Privacy', meta: 'Normativa RSM \u00b7 2026', body: '<p>CT San Marino tratta i dati personali nel rispetto della normativa sammarinese. I dati sono usati esclusivamente per la gestione e non vengono ceduti a terzi. Per esercitare i tuoi diritti scrivi a comunitaterritoriosanmarino&#64;gmail.com</p>' },
-    cookie: { title: 'Cookie Policy', meta: '2026', body: '<p>Questo sito usa esclusivamente cookie tecnici. Nessun cookie di profilazione o tracciamento di terze parti.</p>' }
+    cookie: { title: 'Cookie Policy', meta: '2026', body: '<p>Questo sito utilizza cookie tecnici necessari al funzionamento, che non richiedono consenso.</p><p>Previo consenso, utilizza inoltre:</p><ul style="margin:0 0 16px 20px; padding:0;"><li><strong>Google Analytics</strong>, per statistiche anonime di visita;</li><li><strong>Plugin Facebook</strong>, per mostrare i contenuti della nostra pagina social direttamente sul sito.</li></ul><p>Puoi cambiare la tua scelta in qualsiasi momento cliccando qui: <a href="#" onclick="reopenCookieBanner(); return false;" style="color:var(--gold);">Gestisci preferenze cookie</a>.</p>' }
   };
 
   window.openModal = function(key) {
@@ -1327,6 +1635,85 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') window.closeModalDirect();
   });
+
+  // ============================================================
+  // PAGINE DI APPROFONDIMENTO SUI CAMPI DI AZIONE (pillar overlay)
+  // ============================================================
+  // NOTA PER L'AGGIORNAMENTO: sostituire il testo segnaposto in "body"
+  // con il contenuto definitivo di ciascuna pagina, quando pronto.
+  var pillarData = {
+    abitativi: {
+      icon: '🏠',
+      title: 'Diritti Abitativi',
+      body: '<p>Il campo d\'azione riguarda l\'accesso alla casa per chi vive e lavora a San Marino: la disponibilità di alloggi, il livello dei canoni di locazione e delle compravendite, e le condizioni in cui cittadini e famiglie si trovano a cercare un\'abitazione.</p><p>Per Comunità e Territorio è un tema centrale perché una casa accessibile è la condizione di base per costruire una vita, una famiglia, un futuro nel nostro Paese. Quando questa condizione viene meno, rischiano di venir meno anche la stabilità delle famiglie e la tenuta stessa della comunità sammarinese.</p>'
+    },
+    famiglia: {
+      icon: '👨‍👩‍👧‍👦',
+      title: 'Benessere Familiare',
+      body: '<p>Il campo d\'azione riguarda le condizioni di vita delle famiglie sammarinesi: il costo della vita, il sostegno nei momenti di difficoltà economica e i servizi che accompagnano le diverse fasi della vita familiare.</p><p>Per Comunità e Territorio è importante perché le famiglie sono il tessuto su cui si regge l\'intera comunità. Sostenerle non è solo una questione economica o assistenziale, ma un modo per garantire coesione sociale e dare a tutti, indipendentemente dalla propria condizione, la possibilità di vivere con dignità sul nostro territorio.</p>'
+    },
+    territorio: {
+      icon: '🏔️',
+      title: 'Territorio e Ambiente',
+      body: '<p>Il campo d\'azione riguarda il territorio della Repubblica nel suo complesso: come viene pianificato, come viene tutelato dal punto di vista ambientale e come si intende immaginarne lo sviluppo nei prossimi anni.</p><p>Per Comunità e Territorio è importante perché il Titano non è solo lo spazio in cui viviamo, ma parte della nostra identità. Prendersene cura in modo equilibrato e lungimirante significa lasciare alle prossime generazioni un Paese ancora riconoscibile, vivibile e capace di crescere senza snaturarsi.</p>'
+    },
+    partecipazione: {
+      icon: '🤝',
+      title: 'Partecipazione dei Cittadini',
+      body: '<p>Il campo d\'azione riguarda il rapporto tra i cittadini e le istituzioni: gli strumenti di democrazia diretta che la Repubblica mette a disposizione, e la possibilità concreta per chiunque di far sentire la propria voce sulle scelte che riguardano il Paese.</p><p>Per Comunità e Territorio è importante perché una comunità è forte quando i suoi cittadini partecipano, non quando si limitano a osservare. Promuovere questa partecipazione, con serietà e senza distinzioni politiche, è parte della ragione stessa per cui il Gruppo Civico è nato.</p>'
+    }
+  };
+
+  window.openPillar = function(key) {
+    var d = pillarData[key];
+    if (!d) return;
+    document.getElementById('pillar-overlay-icon').textContent = d.icon;
+    document.getElementById('pillar-overlay-title').textContent = d.title;
+    document.getElementById('pillar-overlay-body').innerHTML = d.body;
+    document.getElementById('pillar-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    window.scrollTo({ top: 0 });
+  };
+
+  window.closePillar = function() {
+    document.getElementById('pillar-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.closePillar();
+  });
+
+  // NEWSLETTER — Formspree
+  window.submitNewsletter = function() {
+    var email = document.getElementById('nl-email').value.trim();
+    if (!email) return;
+    var form = document.getElementById('newsletterForm');
+    var btn = form.querySelector('.btn-gold');
+    if (btn) { btn.textContent = 'Invio in corso...'; btn.disabled = true; }
+    var fd = new FormData();
+    fd.append('_subject', 'Nuova iscrizione Newsletter CT San Marino');
+    fd.append('tipo_modulo', 'Iscrizione Newsletter');
+    fd.append('email', email);
+    fetch('https://formspree.io/f/xwvwnlnr', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd
+    })
+    .then(function(r) {
+      if (r.ok) {
+        form.style.display = 'none';
+        document.getElementById('newsletterSuccess').style.display = 'block';
+      } else {
+        alert('Errore nell\'iscrizione. Riprova o scrivici a comunitaterritoriosanmarino@gmail.com');
+        if (btn) { btn.textContent = 'Iscrivimi \u2192'; btn.disabled = false; }
+      }
+    })
+    .catch(function() {
+      alert('Errore di connessione. Riprova o scrivici a comunitaterritoriosanmarino@gmail.com');
+      if (btn) { btn.textContent = 'Iscrivimi \u2192'; btn.disabled = false; }
+    });
+  };
 
   // FORM CONTATTI — Formspree
   window.submitContact = function() {
