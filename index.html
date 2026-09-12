@@ -706,6 +706,15 @@
     gtag('config', 'G-5FRPES4R7D');
   };
 </script>
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2631048');
+</script>
+<!-- End MailerLite Universal -->
 </head>
 <body>
 <div id="cookie-banner">
@@ -958,12 +967,8 @@
       Ricevi comunicati, eventi e istanze direttamente nella tua casella email, senza dipendere dai social.
     </p>
 
-    <form id="newsletterForm" onsubmit="event.preventDefault(); submitNewsletter();" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-      <input type="email" id="nl-email" required placeholder="La tua email" style="flex:1; min-width:220px; padding:14px 18px; border-radius:2px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); color:#fff; font-size:14px;">
-      <button type="submit" class="btn btn-gold" style="white-space:nowrap;">Iscrivimi →</button>
-    </form>
-    <div id="newsletterSuccess" style="display:none; margin-top:20px; padding:16px; background:rgba(201,168,76,.12); border:1px solid rgba(201,168,76,.3); border-radius:4px; color:var(--gold-light,#e2c97a); font-size:14px;">
-      ✓ Iscrizione ricevuta! Controlla la tua email di conferma.
+    <div id="mlite-newsletter-wrap" style="max-width:420px; margin:0 auto;">
+      <div class="ml-embedded" data-form="bM3u0w"></div>
     </div>
     <p style="font-size:11px; color:rgba(255,255,255,.4); margin-top:16px;">
       Puoi disiscriverti in qualsiasi momento. Consulta la nostra <a href="#" onclick="openModal('privacy')" style="color:rgba(255,255,255,.6); text-decoration:underline;">Informativa Privacy</a>.
@@ -1683,37 +1688,6 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') window.closePillar();
   });
-
-  // NEWSLETTER — Formspree
-  window.submitNewsletter = function() {
-    var email = document.getElementById('nl-email').value.trim();
-    if (!email) return;
-    var form = document.getElementById('newsletterForm');
-    var btn = form.querySelector('.btn-gold');
-    if (btn) { btn.textContent = 'Invio in corso...'; btn.disabled = true; }
-    var fd = new FormData();
-    fd.append('_subject', 'Nuova iscrizione Newsletter CT San Marino');
-    fd.append('tipo_modulo', 'Iscrizione Newsletter');
-    fd.append('email', email);
-    fetch('https://formspree.io/f/xwvwnlnr', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: fd
-    })
-    .then(function(r) {
-      if (r.ok) {
-        form.style.display = 'none';
-        document.getElementById('newsletterSuccess').style.display = 'block';
-      } else {
-        alert('Errore nell\'iscrizione. Riprova o scrivici a comunitaterritoriosanmarino@gmail.com');
-        if (btn) { btn.textContent = 'Iscrivimi \u2192'; btn.disabled = false; }
-      }
-    })
-    .catch(function() {
-      alert('Errore di connessione. Riprova o scrivici a comunitaterritoriosanmarino@gmail.com');
-      if (btn) { btn.textContent = 'Iscrivimi \u2192'; btn.disabled = false; }
-    });
-  };
 
   // FORM CONTATTI — Formspree
   window.submitContact = function() {
