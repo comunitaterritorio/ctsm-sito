@@ -24,6 +24,8 @@ collections:
               - { label: "Titolo", name: "title", widget: "string" }
               - { label: "Data (es. 3 Settembre 2026)", name: "date", widget: "string" }
               - { label: "File PDF", name: "file", widget: "file", media_library: { config: { multiple: false } } }
+              - { label: "Descrizione breve (per WhatsApp/social, facoltativa)", name: "excerpt", widget: "text", required: false, hint: "1-2 frasi: e' il testo che appare nell'anteprima quando il link viene condiviso su WhatsApp/Facebook." }
+              - { label: "Immagine di anteprima (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } }, hint: "Se vuota, viene usata l'immagine generica del sito." }
 
   - name: "eventi"
     label: "Eventi"
