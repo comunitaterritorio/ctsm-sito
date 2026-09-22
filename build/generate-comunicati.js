@@ -135,6 +135,13 @@ function renderPage(item, slug) {
     transition: background .2s;
   }
   .btn-gold:hover { background: var(--gold-light); }
+   .btn-share {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: transparent; color: var(--navy); border: 1px solid var(--gold);
+    font-weight: 600; font-size: 13px; letter-spacing: .04em; padding: 12px 20px; border-radius: 2px;
+    cursor: pointer; font-family: 'Jost', sans-serif; transition: background .2s, color .2s;
+  }
+  .btn-share:hover { background: var(--gold); color: var(--white); }
   .back-link { display: inline-block; margin-top: 48px; font-size: 13px; color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--border); }
   footer { text-align: center; padding: 32px; font-size: 12px; color: var(--text-muted); }
 </style>
@@ -153,11 +160,26 @@ function renderPage(item, slug) {
   ${item.excerpt ? `<p class="excerpt">${escapeHtml(item.excerpt)}</p>` : ''}
   <div class="pdf-box">
     <span>Documento ufficiale in formato PDF</span>
-    <a class="btn-gold" href="${pdfUrl}" target="_blank" rel="noopener">Scarica il PDF →</a>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a class="btn-gold" href="${pdfUrl}" target="_blank" rel="noopener">Scarica il PDF →</a>
+      <button class="btn-share" onclick="condividiLink(this)" type="button">🔗 Condividi</button>
+    </div>
   </div>
   <a class="back-link" href="/">← Torna al sito di CTSM</a>
 </main>
 <footer>Comunità e Territorio San Marino · Associazione Culturale</footer>
+<script>
+  function condividiLink(btn) {
+    var url = window.location.href;
+    var originalText = btn.textContent;
+    navigator.clipboard.writeText(url).then(function() {
+      btn.textContent = '✓ Link copiato!';
+      setTimeout(function() { btn.textContent = originalText; }, 2000);
+    }).catch(function() {
+      prompt('Copia questo link:', url);
+    });
+  }
+</script>
 </body>
 </html>
 `;
