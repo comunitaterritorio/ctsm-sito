@@ -1287,11 +1287,39 @@
     obs.observe(sez);
   });
 
+  // Deve rimanere identica alla funzione slugify() in build/generate-comunicati.js
+  // cosi' i link generati qui puntano esattamente alle pagine create dal build.
+  function slugifyComunicato(title, date) {
+    var base = (title || '').toString()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (base.length > 50) {
+      base = base.slice(0, 50);
+      var lastDash = base.lastIndexOf('-');
+      if (lastDash > 20) base = base.slice(0, lastDash);
+    }
+    return base || ('comunicato-' + Date.now());
+  }
+
   var comunicatiArchive = [];
 
   fetch('data/comunicati.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
-    .then(function(data) { comunicatiArchive = (data.items || []).slice().reverse(); numeriReady.comunicati = true; tryAnimateNumeri(); })
+    .then(function(data) {
+      var items = data.items || [];
+      var usedSlugs = {};
+      for (var i = 0; i < items.length; i++) {
+        var s = slugifyComunicato(items[i].title, items[i].date);
+        var unique = s, n = 2;
+        while (usedSlugs[unique]) { unique = s + '-' + n; n++; }
+        usedSlugs[unique] = true;
+        items[i].slug = unique;
+      }
+      comunicatiArchive = items.slice().reverse();
+      numeriReady.comunicati = true; tryAnimateNumeri();
+    })
     .catch(function() { comunicatiArchive = []; numeriReady.comunicati = true; tryAnimateNumeri(); });
 
   window.renderArchivioList = function(filter) {
@@ -1305,17 +1333,32 @@
     } else {
       for (var i = 0; i < filtered.length; i++) {
         var c = filtered[i];
-        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
+        var slug = c.slug || slugifyComunicato(c.title, c.date);
+        var pageUrl = window.location.origin + '/comunicati/' + slug + '/';
+        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12); flex-wrap:wrap;">' +
           '<div>' +
             '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
             '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
           '</div>' +
-          '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
+          '<div style="display:flex; gap:8px; flex-wrap:wrap;">' +
+            '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
+            '<button type="button" onclick="condividiComunicato(this, \'' + pageUrl + '\')" class="btn btn-outline" style="font-size:11px; padding:8px 16px; white-space:nowrap; border-color:var(--gold); color:var(--gold);">🔗 Condividi</button>' +
+          '</div>' +
         '</div>';
       }
     }
     document.getElementById('archivio-list').innerHTML = itemsHtml;
   }
+
+  window.condividiComunicato = function(btn, url) {
+    var originalText = btn.textContent;
+    navigator.clipboard.writeText(url).then(function() {
+      btn.textContent = '✓ Copiato!';
+      setTimeout(function() { btn.textContent = originalText; }, 2000);
+    }).catch(function() {
+      prompt('Copia questo link:', url);
+    });
+  };
 
   // ============================================================
   // CONSENSO COOKIE
@@ -1499,7 +1542,7 @@
         html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Comunicati (' + comunicatiRes.length + ')</div>';
         for (var i = 0; i < comunicatiRes.length; i++) {
           var c = comunicatiRes[i];
-          html += ricercaRow(c.title, c.date, '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>');
+          html += ricercaRow(c.title, c.date, '<a href="/comunicati/' + c.slug + '/" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Leggi e condividi →</a>');
         }
       }
       if (istanzeRes.length) {
