@@ -689,6 +689,18 @@
     .cookie-actions { justify-content: stretch; }
     .cookie-btn { flex: 1; }
   }
+
+/* ===== Risultati "Cerca nel sito": layout uniforme ===== */
+.ricerca-row { padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12); }
+.ricerca-row-main { display:grid; grid-template-columns:1fr; gap:12px; align-items:start; }
+.ricerca-row-title { font-weight:600; color:#ffffff; }
+.ricerca-row-date { font-size:12px; color:rgba(255,255,255,.55); margin-top:4px; }
+.ricerca-row-action { justify-self:start; }
+.ricerca-row-action .btn { margin:0; }
+@media (min-width: 640px) {
+  .ricerca-row-main { grid-template-columns:1fr auto; gap:20px; align-items:center; }
+  .ricerca-row-action { justify-self:end; }
+}
 </style>
 <script>
   // Google Analytics e SDK Facebook vengono caricati SOLO dopo il consenso ai cookie
@@ -1512,13 +1524,13 @@
   // RICERCA GLOBALE — cerca tra Comunicati, Istanze d'Arengo e Incontri insieme
   // ============================================================
   function ricercaRow(title, date, actionHtml, gallery) {
-    return '<div style="padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
-      '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">' +
-        '<div>' +
-          '<div style="font-weight:600; color:#ffffff;">' + title + '</div>' +
-          '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + date + '</div>' +
+    return '<div class="ricerca-row">' +
+      '<div class="ricerca-row-main">' +
+        '<div class="ricerca-row-text">' +
+          '<div class="ricerca-row-title">' + title + '</div>' +
+          '<div class="ricerca-row-date">' + date + '</div>' +
         '</div>' +
-        actionHtml +
+        (actionHtml ? '<div class="ricerca-row-action">' + actionHtml + '</div>' : '') +
       '</div>' +
       (gallery || '') +
     '</div>';
