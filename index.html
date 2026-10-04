@@ -1315,6 +1315,21 @@
     return base || ('comunicato-' + Date.now());
   }
 
+  // Stessa logica di slugify() in build/generate-istanze.js
+  function slugifyIstanza(title, date) {
+    var base = (title || '').toString()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (base.length > 50) {
+      base = base.slice(0, 50);
+      var lastDash = base.lastIndexOf('-');
+      if (lastDash > 20) base = base.slice(0, lastDash);
+    }
+    return base || ('istanza-' + Date.now());
+  }
+
   var comunicatiArchive = [];
 
   fetch('data/comunicati.json?_=' + Date.now())
@@ -1371,6 +1386,21 @@
       prompt('Copia questo link:', url);
     });
   };
+
+  // Pulsante "Condividi" generico (copia il link diretto del file)
+  function assoluto(path) {
+    try { return new URL(path, window.location.origin + '/').href; } catch (e) { return path; }
+  }
+  window.condividiLink = function(btn) {
+    condividiComunicato(btn, btn.getAttribute('data-url'));
+  };
+  function condividiBtn(path) {
+    if (!path) return '';
+    return '<button type="button" data-url="' + assoluto(path) + '" onclick="condividiLink(this)" class="btn btn-outline" style="font-size:11px; padding:8px 16px; white-space:nowrap; border-color:var(--gold); color:var(--gold);">🔗 Condividi</button>';
+  }
+  function azioniWrap(inner) {
+    return inner ? '<div style="display:flex; gap:8px; flex-wrap:wrap;">' + inner + '</div>' : '';
+  }
 
   // ============================================================
   // CONSENSO COOKIE
@@ -1452,7 +1482,7 @@
               '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
               '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
             '</div>' +
-            (c.pdf ? '<a href="' + c.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '') +
+            azioniWrap((c.pdf ? '<a href="' + c.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '') + condividiBtn(c.pdf || imgs[0])) +
           '</div>' +
           gallery +
         '</div>';
@@ -1481,7 +1511,19 @@
 
   fetch('data/istanze.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
-    .then(function(data) { istanzeArchive = (data.items || []).slice().reverse(); numeriReady.istanze = true; tryAnimateNumeri(); })
+    .then(function(data) {
+      var items = data.items || [];
+      var usedSlugs = {};
+      for (var i = 0; i < items.length; i++) {
+        var sl = slugifyIstanza(items[i].title, items[i].date);
+        var unique = sl, n = 2;
+        while (usedSlugs[unique]) { unique = sl + '-' + n; n++; }
+        usedSlugs[unique] = true;
+        items[i].slug = unique;
+      }
+      istanzeArchive = items.slice().reverse();
+      numeriReady.istanze = true; tryAnimateNumeri();
+    })
     .catch(function() { istanzeArchive = []; numeriReady.istanze = true; tryAnimateNumeri(); });
 
   window.renderIstanzeList = function(filter) {
@@ -1495,12 +1537,12 @@
     } else {
       for (var i = 0; i < filtered.length; i++) {
         var c = filtered[i];
-        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
+        itemsHtml += '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12); flex-wrap:wrap;">' +
           '<div>' +
             '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
             '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
           '</div>' +
-          '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
+          azioniWrap('<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' + condividiBtn('/istanze/' + (c.slug || slugifyIstanza(c.title, c.date)) + '/')) +
         '</div>';
       }
     }
@@ -1561,7 +1603,7 @@
         html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Istanze d\'Arengo (' + istanzeRes.length + ')</div>';
         for (var j = 0; j < istanzeRes.length; j++) {
           var s = istanzeRes[j];
-          html += ricercaRow(s.title, s.date, '<a href="' + s.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>');
+          html += ricercaRow(s.title, s.date, azioniWrap('<a href="' + s.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' + condividiBtn('/istanze/' + (s.slug || slugifyIstanza(s.title, s.date)) + '/')));
         }
       }
       if (incontriRes.length) {
@@ -1577,7 +1619,7 @@
             }
             gallery += '</div>';
           }
-          var action = e.pdf ? '<a href="' + e.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '';
+          var action = azioniWrap((e.pdf ? '<a href="' + e.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '') + condividiBtn(e.pdf || imgs[0]));
           html += ricercaRow(e.title, e.date, action, gallery);
         }
       }
