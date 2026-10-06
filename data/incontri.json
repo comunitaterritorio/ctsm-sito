@@ -23,6 +23,14 @@
         "/incontri/1789750416776.png"
       ],
       "pdf": "/incontri/ctsm_rf.pdf"
+    },
+    {
+      "title": "Incontro con Rete",
+      "date": "5 ottobre 2026",
+      "pdf": "/incontri/comunicato_ctsm_rete.pdf",
+      "images": [
+        "/incontri/rete_ctsm.png"
+      ]
     }
   ]
 }
