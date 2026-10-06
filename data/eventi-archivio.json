@@ -1,3 +1,17 @@
 {
-  "items": []
+  "items": [
+    {
+      "title": "Consegna Istanze D'Arengo",
+      "date": "4 ottobre 2026",
+      "description": "Comunità e Territorio San Marino consegnano le Istanze d'Arengo",
+      "images": [
+        "/eventi/whatsapp-image-2026-10-04-at-18.35.06.jpeg",
+        "/eventi/whatsapp-image-2026-10-04-at-18.35.06-4-.jpeg",
+        "/eventi/whatsapp-image-2026-10-04-at-18.35.06-3-.jpeg",
+        "/eventi/whatsapp-image-2026-10-04-at-18.35.06-2-.jpeg",
+        "/eventi/whatsapp-image-2026-10-04-at-18.35.06-1-.jpeg"
+      ],
+      "pdf": "/eventi/comunicato-ctsm-istanze-arengo.pdf"
+    }
+  ]
 }
