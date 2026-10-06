@@ -28,10 +28,10 @@ collections:
               - { label: "Immagine di anteprima (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } }, hint: "Se vuota, viene usata l'immagine generica del sito." }
 
   - name: "eventi"
-    label: "Eventi"
+    label: "Prossimi Eventi"
     files:
       - file: "data/eventi.json"
-        label: "Eventi"
+        label: "Prossimi Eventi"
         name: "eventi"
         fields:
           - label: "Eventi"
@@ -48,6 +48,31 @@ collections:
               - { label: "Luogo", name: "location", widget: "string" }
               - { label: "Categoria (es. Assemblea, Incontro)", name: "category", widget: "string", required: false }
               - { label: "Descrizione", name: "description", widget: "text" }
+
+  - name: "eventi-archivio"
+    label: "Archivio Eventi"
+    files:
+      - file: "data/eventi-archivio.json"
+        label: "Archivio Eventi"
+        name: "eventi-archivio"
+        media_folder: "/eventi"
+        public_folder: "/eventi"
+        fields:
+          - label: "Eventi"
+            name: "items"
+            widget: "list"
+            label_singular: "Evento"
+            summary: "{{title}} — {{date}}"
+            fields:
+              - { label: "Titolo evento", name: "title", widget: "string" }
+              - { label: "Data (es. 20 Settembre 2026)", name: "date", widget: "string" }
+              - { label: "Descrizione (facoltativa)", name: "description", widget: "text", required: false }
+              - label: "Immagini (facoltative)"
+                name: "images"
+                widget: "list"
+                required: false
+                field: { label: "Immagine", name: "image", widget: "image", media_library: { config: { multiple: false } } }
+              - { label: "File PDF (facoltativo)", name: "pdf", widget: "file", required: false, media_library: { config: { multiple: false } } }
 
   - name: "incontri"
     label: "I Nostri Incontri"

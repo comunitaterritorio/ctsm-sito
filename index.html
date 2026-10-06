@@ -1006,8 +1006,16 @@
   <button onclick="openIncontri()" class="btn btn-gold" style="margin-top:28px;">Apri I Nostri Incontri →</button>
 </section>
 
+<!-- ARCHIVIO EVENTI (diverso da "Prossimi eventi") -->
+<section id="archivio-eventi" style="background:var(--cream); text-align:center; padding-top:60px; padding-bottom:60px;">
+  <div class="section-label">Iniziative</div>
+  <h2 class="section-title">Gli <em>eventi</em></h2>
+  <p class="section-lead" style="margin-left:auto; margin-right:auto;">Sfoglia gli eventi organizzati da CT San Marino: date, descrizioni, foto e documenti.</p>
+  <button onclick="openEventiArchivio()" class="btn btn-gold" style="margin-top:28px;">Apri Eventi →</button>
+</section>
+
 <!-- ISTANZE D'ARENGO -->
-<section id="istanze-arengo" style="background:var(--cream); text-align:center; padding-top:60px; padding-bottom:60px;">
+<section id="istanze-arengo" style="background:var(--white); text-align:center; padding-top:60px; padding-bottom:60px;">
   <div class="section-label">Partecipazione</div>
   <h2 class="section-title">Istanze d'<em>Arengo</em></h2>
   <p class="section-lead" style="margin-left:auto; margin-right:auto;">Consulta tutte le Istanze d'Arengo presentate da CT San Marino, disponibili in formato PDF.</p>
@@ -1151,6 +1159,7 @@
         <li><a href="#notizie">Notizie</a></li>
         <li><a href="#" onclick="openArchivio()">Comunicati</a></li>
         <li><a href="#" onclick="openIncontri()">Incontri</a></li>
+        <li><a href="#" onclick="openEventiArchivio()">Archivio eventi</a></li>
         <li><a href="#" onclick="openIstanze()">Istanze d'Arengo</a></li>
         <li><a href="#contatti">Sportello ascolto</a></li>
       </ul>
@@ -1505,6 +1514,105 @@
   };
 
   // ============================================================
+  // ARCHIVIO EVENTI — gestito dal pannello /admin (diverso da "Prossimi eventi")
+  // ============================================================
+  var eventiArchive = [];
+
+  // Stessa logica di slugify()/uniqueSlugs() in build/generate-eventi.js
+  function slugifyEvento(title, date) {
+    var base = (title || '').toString()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (base.length > 50) {
+      base = base.slice(0, 50);
+      var lastDash = base.lastIndexOf('-');
+      if (lastDash > 20) base = base.slice(0, lastDash);
+    }
+    if (!base) {
+      var hex = '';
+      var d = (date || '');
+      for (var k = 0; k < d.length && hex.length < 8; k++) { hex += ('0' + d.charCodeAt(k).toString(16)).slice(-2); }
+      base = 'evento-' + hex.slice(0, 8);
+    }
+    return base;
+  }
+
+  fetch('data/eventi-archivio.json?_=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : { items: [] }; })
+    .then(function(data) {
+      var items = data.items || [];
+      var used = {};
+      items.forEach(function(it) {
+        var base = slugifyEvento(it.title, it.date), u = base, n = 2;
+        while (used[u]) { u = base + '-' + n; n++; }
+        used[u] = true;
+        it.slug = u;
+      });
+      eventiArchive = items.slice().reverse();
+    })
+    .catch(function() { eventiArchive = []; });
+
+  function eventoMatches(c, filter) {
+    return (c.title || '').toLowerCase().indexOf(filter) !== -1 ||
+           (c.date || '').toLowerCase().indexOf(filter) !== -1 ||
+           (c.description || '').toLowerCase().indexOf(filter) !== -1;
+  }
+
+  function eventoGallery(c, h, w) {
+    var imgs = c.images || [];
+    if (!imgs.length) return '';
+    var g = '<div style="display:flex; gap:8px; overflow-x:auto; margin-top:12px; padding-bottom:4px;">';
+    for (var j = 0; j < imgs.length; j++) {
+      g += '<img src="' + imgs[j] + '" alt="' + c.title + '" style="height:' + h + 'px; width:' + w + 'px; object-fit:cover; border-radius:2px; flex-shrink:0; cursor:pointer;" onclick="window.open(\'' + imgs[j] + '\', \'_blank\')">';
+    }
+    return g + '</div>';
+  }
+
+  function eventoAzioni(c) {
+    return azioniWrap('<a href="/eventi/' + c.slug + '/" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Apri pagina →</a>' + condividiBtn('/eventi/' + c.slug + '/'));
+  }
+
+  window.renderEventiArchivioList = function(filter) {
+    filter = (filter || '').toLowerCase().trim();
+    var filtered = eventiArchive.filter(function(c) { return eventoMatches(c, filter); });
+    var itemsHtml = '';
+    if (filtered.length === 0) {
+      itemsHtml = '<p style="color:rgba(255,255,255,.55); padding:16px 0;">Nessun evento trovato.</p>';
+    } else {
+      for (var i = 0; i < filtered.length; i++) {
+        var c = filtered[i];
+        itemsHtml += '<div style="padding:16px 0; border-bottom:1px solid rgba(255,255,255,.12);">' +
+          '<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">' +
+            '<div>' +
+              '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
+              '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
+              (c.description ? '<div style="font-size:13px; color:rgba(255,255,255,.75); margin-top:8px; line-height:1.5; white-space:pre-line;">' + c.description + '</div>' : '') +
+            '</div>' +
+            eventoAzioni(c) +
+          '</div>' +
+          eventoGallery(c, 90, 120) +
+        '</div>';
+      }
+    }
+    document.getElementById('eventi-archivio-list').innerHTML = itemsHtml;
+  };
+
+  window.openEventiArchivio = function() {
+    document.getElementById('modal-inner').innerHTML =
+      '<h3>Eventi</h3>' +
+      '<div class="modal-meta">Gli eventi organizzati da CT San Marino</div>' +
+      '<div class="modal-body">' +
+        '<input type="text" id="eventi-archivio-search" placeholder="Cerca per data o parola chiave..." oninput="renderEventiArchivioList(this.value)" style="width:100%; padding:10px 14px; margin-bottom:16px; border:1px solid var(--border); border-radius:2px; font-size:14px; box-sizing:border-box;">' +
+        '<div id="eventi-archivio-list"></div>' +
+      '</div>';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderEventiArchivioList('');
+  };
+
+  // ============================================================
   // ISTANZE D'ARENGO — gestite dal pannello /admin
   // ============================================================
   var istanzeArchive = [];
@@ -1563,7 +1671,7 @@
   };
 
   // ============================================================
-  // RICERCA GLOBALE — cerca tra Comunicati, Istanze d'Arengo e Incontri insieme
+  // RICERCA GLOBALE — cerca tra Comunicati, Istanze d'Arengo, Incontri ed Eventi insieme
   // ============================================================
   function ricercaRow(title, date, actionHtml, gallery) {
     return '<div class="ricerca-row">' +
@@ -1585,7 +1693,8 @@
     var comunicatiRes = comunicatiArchive.filter(matches);
     var istanzeRes = istanzeArchive.filter(matches);
     var incontriRes = incontriArchive.filter(matches);
-    var totale = comunicatiRes.length + istanzeRes.length + incontriRes.length;
+    var eventiRes = eventiArchive.filter(function(c) { return eventoMatches(c, filter); });
+    var totale = comunicatiRes.length + istanzeRes.length + incontriRes.length + eventiRes.length;
 
     var html = '';
 
@@ -1623,6 +1732,13 @@
           html += ricercaRow(e.title, e.date, action, gallery);
         }
       }
+      if (eventiRes.length) {
+        html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Eventi (' + eventiRes.length + ')</div>';
+        for (var n = 0; n < eventiRes.length; n++) {
+          var ev = eventiRes[n];
+          html += ricercaRow(ev.title, ev.date + (ev.description ? ' — ' + ev.description.replace(/\s+/g, ' ').slice(0, 120) + (ev.description.length > 120 ? '…' : '') : ''), eventoAzioni(ev), eventoGallery(ev, 70, 100));
+        }
+      }
     }
     document.getElementById('ricerca-globale-list').innerHTML = html;
   };
@@ -1630,7 +1746,7 @@
   window.openRicercaGlobale = function() {
     document.getElementById('modal-inner').innerHTML =
       '<h3>Cerca nel sito</h3>' +
-      '<div class="modal-meta">Cerca insieme tra Comunicati, Istanze d\'Arengo e Incontri</div>' +
+      '<div class="modal-meta">Cerca insieme tra Comunicati, Istanze d\'Arengo, Incontri ed Eventi</div>' +
       '<div class="modal-body">' +
         '<input type="text" id="ricerca-globale-search" placeholder="Cerca per data o parola chiave..." oninput="renderRicercaGlobale(this.value)" style="width:100%; padding:10px 14px; margin-bottom:8px; border:1px solid var(--border); border-radius:2px; font-size:14px; box-sizing:border-box;">' +
         '<div id="ricerca-globale-list"></div>' +
