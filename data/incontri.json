@@ -31,6 +31,14 @@
       "images": [
         "/incontri/rete_ctsm.png"
       ]
+    },
+    {
+      "title": "Incontro con  FSM",
+      "date": "7 ottobre 2026",
+      "images": [
+        "/incontri/fsm_ctsm.png"
+      ],
+      "pdf": "/incontri/comunicato_fsm_ctsm.pdf"
     }
   ]
 }
