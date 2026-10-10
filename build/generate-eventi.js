@@ -182,16 +182,10 @@ function renderPage(item, slug) {
   <a class="back-link" href="/">← Torna al sito di CTSM</a>
 </main>
 <footer>Comunità e Territorio San Marino · Associazione Culturale</footer>
+<script src="/share.js"></script>
 <script>
   function condividiLink(btn) {
-    var url = window.location.href;
-    var originalText = btn.textContent;
-    navigator.clipboard.writeText(url).then(function() {
-      btn.textContent = '✓ Link copiato!';
-      setTimeout(function() { btn.textContent = originalText; }, 2000);
-    }).catch(function() {
-      prompt('Copia questo link:', url);
-    });
+    ctsmShare(window.location.href, document.title.split(' — ')[0]);
   }
 </script>
 </body>
