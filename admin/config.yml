@@ -33,21 +33,22 @@ collections:
       - file: "data/eventi.json"
         label: "Prossimi Eventi"
         name: "eventi"
+        media_folder: "/eventi"
+        public_folder: "/eventi"
         fields:
           - label: "Eventi"
             name: "items"
             widget: "list"
             label_singular: "Evento"
-            summary: "{{title}} — {{date}} {{month}}"
+            summary: "{{title}} — {{date}}"
             fields:
               - { label: "Titolo", name: "title", widget: "string" }
-              - { label: "Giorno (numero, es. 15)", name: "day", widget: "string" }
-              - { label: "Mese (es. APR)", name: "month", widget: "string" }
-              - { label: "Anno (es. 2026)", name: "year", widget: "string" }
+              - { label: "Data", name: "date", widget: "datetime", date_format: "DD/MM/YYYY", time_format: false, format: "YYYY-MM-DD", picker_utc: false }
               - { label: "Orario (es. ore 18:30)", name: "time", widget: "string" }
               - { label: "Luogo", name: "location", widget: "string" }
               - { label: "Categoria (es. Assemblea, Incontro)", name: "category", widget: "string", required: false }
               - { label: "Descrizione", name: "description", widget: "text" }
+              - { label: "Locandina / immagine (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } }, hint: "Se la inserisci, appare in cima alla card dell'evento sul sito." }
 
   - name: "eventi-archivio"
     label: "Archivio Eventi"

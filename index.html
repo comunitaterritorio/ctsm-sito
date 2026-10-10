@@ -1809,12 +1809,19 @@
         banner.style.display = 'block';
         return;
       }
+      var MESI = ['GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'];
       var html = '';
       for (var i = 0; i < items.length; i++) {
         var e = items[i];
-        html += '<div class="event-card">' +
-          '<div class="event-date-band"><div class="event-day">' + (e.day || '•') + '</div>' +
-          '<div class="event-month-year"><div class="event-month">' + (e.month || '') + '</div><div class="event-year">' + (e.year || '') + '</div></div></div>' +
+        var day = e.day, month = e.month, year = e.year;
+        var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(e.date || '');
+        if (m) { day = String(parseInt(m[3], 10)); month = MESI[parseInt(m[2], 10) - 1]; year = m[1]; }
+        var imgHtml = e.image
+          ? '<a href="' + encodeURI(e.image) + '" target="_blank" rel="noopener" style="display:block; background:var(--navy-deep);"><img src="' + encodeURI(e.image) + '" alt="' + String(e.title || '').replace(/"/g, '&quot;') + '" loading="lazy" style="display:block; width:100%; height:auto;"></a>'
+          : '';
+        html += '<div class="event-card">' + imgHtml +
+          '<div class="event-date-band"><div class="event-day">' + (day || '•') + '</div>' +
+          '<div class="event-month-year"><div class="event-month">' + (month || '') + '</div><div class="event-year">' + (year || '') + '</div></div></div>' +
           '<div class="event-body">' +
             '<div class="event-category">' + (e.category || 'Evento') + '</div>' +
             '<div class="event-title">' + e.title + '</div>' +
