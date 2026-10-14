@@ -39,6 +39,14 @@
         "/incontri/fsm_ctsm.png"
       ],
       "pdf": "/incontri/comunicato_fsm_ctsm.pdf"
+    },
+    {
+      "title": "Un incontro cordiale con AttivaMente",
+      "date": "14 ottobre 2026",
+      "images": [
+        "/incontri/attivamente_ctsm.png"
+      ],
+      "pdf": "/incontri/comunicato_attivamente_ctsm.pdf"
     }
   ]
 }
