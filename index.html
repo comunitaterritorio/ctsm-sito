@@ -1354,7 +1354,7 @@
         usedSlugs[unique] = true;
         items[i].slug = unique;
       }
-      comunicatiArchive = items.slice().reverse();
+      comunicatiArchive = items.slice();
       numeriReady.comunicati = true; tryAnimateNumeri();
     })
     .catch(function() { comunicatiArchive = []; numeriReady.comunicati = true; tryAnimateNumeri(); });
@@ -1458,7 +1458,7 @@
 
   fetch('data/incontri.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
-    .then(function(data) { incontriArchive = (data.items || []).slice().reverse(); numeriReady.incontri = true; tryAnimateNumeri(); })
+    .then(function(data) { incontriArchive = (data.items || []).slice(); numeriReady.incontri = true; tryAnimateNumeri(); })
     .catch(function() { incontriArchive = []; numeriReady.incontri = true; tryAnimateNumeri(); });
 
   window.renderIncontriList = function(filter) {
@@ -1546,7 +1546,7 @@
         used[u] = true;
         it.slug = u;
       });
-      eventiArchive = items.slice().reverse();
+      eventiArchive = items.slice();
     })
     .catch(function() { eventiArchive = []; });
 
@@ -1625,7 +1625,7 @@
         usedSlugs[unique] = true;
         items[i].slug = unique;
       }
-      istanzeArchive = items.slice().reverse();
+      istanzeArchive = items.slice();
       numeriReady.istanze = true; tryAnimateNumeri();
     })
     .catch(function() { istanzeArchive = []; numeriReady.istanze = true; tryAnimateNumeri(); });
@@ -1758,7 +1758,7 @@
   fetch('data/post-in-evidenza.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
     .then(function(data) {
-      var items = (data.items || []).slice().reverse();
+      var items = (data.items || []).slice();
       var container = document.getElementById('post-evidenza-list');
       if (!container) return;
       if (items.length === 0) {
@@ -1798,7 +1798,7 @@
   fetch('data/eventi.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
     .then(function(data) {
-      var items = data.items || [];
+      var items = (data.items || []).slice().reverse(); // Prossimi Eventi: ordine di sempre sul sito
       var grid = document.getElementById('events-grid');
       var banner = document.getElementById('events-empty-banner');
       if (items.length === 0) {

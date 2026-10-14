@@ -1,36 +1,12 @@
 {
   "items": [
     {
-      "title": "Incontro con Alleanza Riformista",
-      "date": "17 settembre 2026",
+      "title": "Un incontro cordiale con AttivaMente",
+      "date": "14 ottobre 2026",
       "images": [
-        "/incontri/loghi_ctsm_allenzariformista.png"
+        "/incontri/attivamente_ctsm.png"
       ],
-      "pdf": "/incontri/ctsm-ar.pdf"
-    },
-    {
-      "title": "Incontro con CSDL - CDSL",
-      "date": "15 settembre 2026",
-      "images": [
-        "/incontri/fb_img_1789748041841.jpg"
-      ],
-      "pdf": "/incontri/ctsm_csdl-cdsl.pdf"
-    },
-    {
-      "title": "Incontro con Repubblica Futura",
-      "date": "18 settembre 2026",
-      "images": [
-        "/incontri/1789750416776.png"
-      ],
-      "pdf": "/incontri/ctsm_rf.pdf"
-    },
-    {
-      "title": "Incontro con Rete",
-      "date": "5 ottobre 2026",
-      "pdf": "/incontri/comunicato_ctsm_rete.pdf",
-      "images": [
-        "/incontri/rete_ctsm.png"
-      ]
+      "pdf": "/incontri/comunicato_attivamente_ctsm.pdf"
     },
     {
       "title": "Incontro con  FSM",
@@ -41,12 +17,36 @@
       "pdf": "/incontri/comunicato_fsm_ctsm.pdf"
     },
     {
-      "title": "Un incontro cordiale con AttivaMente",
-      "date": "14 ottobre 2026",
+      "title": "Incontro con Rete",
+      "date": "5 ottobre 2026",
+      "pdf": "/incontri/comunicato_ctsm_rete.pdf",
       "images": [
-        "/incontri/attivamente_ctsm.png"
+        "/incontri/rete_ctsm.png"
+      ]
+    },
+    {
+      "title": "Incontro con Repubblica Futura",
+      "date": "18 settembre 2026",
+      "images": [
+        "/incontri/1789750416776.png"
       ],
-      "pdf": "/incontri/comunicato_attivamente_ctsm.pdf"
+      "pdf": "/incontri/ctsm_rf.pdf"
+    },
+    {
+      "title": "Incontro con CSDL - CDSL",
+      "date": "15 settembre 2026",
+      "images": [
+        "/incontri/fb_img_1789748041841.jpg"
+      ],
+      "pdf": "/incontri/ctsm_csdl-cdsl.pdf"
+    },
+    {
+      "title": "Incontro con Alleanza Riformista",
+      "date": "17 settembre 2026",
+      "images": [
+        "/incontri/loghi_ctsm_allenzariformista.png"
+      ],
+      "pdf": "/incontri/ctsm-ar.pdf"
     }
   ]
 }

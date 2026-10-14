@@ -1,29 +1,10 @@
 {
   "items": [
     {
-      "title": "Emergenza abitativa: «Basta annunci, servono interventi concreti»",
-      "date": "3 Settembre 2026",
-      "file": "/comunicati/2026-09-emergenza-abitativa.pdf"
-    },
-    {
-      "title": "Odio online e tutela dei minori sui social; le proposte ci sono, le risposte no. ",
-      "date": "14 settembre 2026",
-      "file": "/comunicati/comunicato-minori.pdf"
-    },
-    {
-      "title": "Culla per la vita: un impegno approvato dal Consiglio Grande e Generale e mai tradotto in realtà",
-      "date": "17 settembre 2026",
-      "file": "/comunicati/comunicato-culla-della-vita.pdf"
-    },
-    {
-      "title": "COT: CTSM chiede chiarezza sul depotenziamento del servizio prima del picco influenzale",
-      "date": "22 settembre 2026",
-      "file": "/comunicati/comunicato-ctsm-cot.pdf"
-    },
-    {
-      "title": "Democrazia, istituzioni e rispetto della volontà dei cittadini",
-      "date": "29 settembre 2026",
-      "file": "/comunicati/comunicato-ctsm-democrazia_istituzioni.pdf"
+      "title": "Pazienti costretti in fila per un pezzo di carta: nel 2026 è una vergogna che non possiamo più accettare",
+      "date": "13 ottobre 2026",
+      "file": "/comunicati/comunicato-ctsm-certificati-medici.pdf",
+      "excerpt": "Nel 2026, con la febbre alta, a San Marino sei ancora costretto ad andare dal medico di condotta solo per ritirare un foglio che certifica che sei malato. Chiediamo con fermezza una modalità semplice e a distanza per i certificati di malattia: la dignità di chi sta male non può passare da una fila in ambulatorio. "
     },
     {
       "title": "SMaC Card pronta per l'Europa? CTSM chiede alle istituzioni di dirlo chiaramente",
@@ -31,10 +12,29 @@
       "file": "/comunicati/comunicato-ctsm-smac.pdf"
     },
     {
-      "title": "Pazienti costretti in fila per un pezzo di carta: nel 2026 è una vergogna che non possiamo più accettare",
-      "date": "13 ottobre 2026",
-      "file": "/comunicati/comunicato-ctsm-certificati-medici.pdf",
-      "excerpt": "Nel 2026, con la febbre alta, a San Marino sei ancora costretto ad andare dal medico di condotta solo per ritirare un foglio che certifica che sei malato. Chiediamo con fermezza una modalità semplice e a distanza per i certificati di malattia: la dignità di chi sta male non può passare da una fila in ambulatorio. "
+      "title": "Democrazia, istituzioni e rispetto della volontà dei cittadini",
+      "date": "29 settembre 2026",
+      "file": "/comunicati/comunicato-ctsm-democrazia_istituzioni.pdf"
+    },
+    {
+      "title": "COT: CTSM chiede chiarezza sul depotenziamento del servizio prima del picco influenzale",
+      "date": "22 settembre 2026",
+      "file": "/comunicati/comunicato-ctsm-cot.pdf"
+    },
+    {
+      "title": "Culla per la vita: un impegno approvato dal Consiglio Grande e Generale e mai tradotto in realtà",
+      "date": "17 settembre 2026",
+      "file": "/comunicati/comunicato-culla-della-vita.pdf"
+    },
+    {
+      "title": "Odio online e tutela dei minori sui social; le proposte ci sono, le risposte no. ",
+      "date": "14 settembre 2026",
+      "file": "/comunicati/comunicato-minori.pdf"
+    },
+    {
+      "title": "Emergenza abitativa: «Basta annunci, servono interventi concreti»",
+      "date": "3 Settembre 2026",
+      "file": "/comunicati/2026-09-emergenza-abitativa.pdf"
     }
   ]
 }

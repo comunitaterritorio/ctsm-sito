@@ -18,6 +18,7 @@ collections:
           - label: "Comunicati"
             name: "items"
             widget: "list"
+            add_to_top: true
             label_singular: "Comunicato"
             summary: "{{title}} — {{date}}"
             fields:
@@ -39,6 +40,7 @@ collections:
           - label: "Eventi"
             name: "items"
             widget: "list"
+            add_to_top: true
             label_singular: "Evento"
             summary: "{{title}} — {{date}}"
             fields:
@@ -62,6 +64,7 @@ collections:
           - label: "Eventi"
             name: "items"
             widget: "list"
+            add_to_top: true
             label_singular: "Evento"
             summary: "{{title}} — {{date}}"
             fields:
@@ -87,6 +90,7 @@ collections:
           - label: "Incontri"
             name: "items"
             widget: "list"
+            add_to_top: true
             label_singular: "Incontro"
             summary: "{{title}} — {{date}}"
             fields:
@@ -111,6 +115,7 @@ collections:
           - label: "Istanze"
             name: "items"
             widget: "list"
+            add_to_top: true
             label_singular: "Istanza"
             summary: "{{title}} — {{date}}"
             fields:
@@ -130,6 +135,7 @@ collections:
           - label: "Post"
             name: "items"
             widget: "list"
+            add_to_top: true
             label_singular: "Post"
             summary: "{{date}} — {{text}}"
             fields:
