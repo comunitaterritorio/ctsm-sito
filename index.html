@@ -1403,6 +1403,17 @@
     if (!path) return '';
     return '<button type="button" data-url="' + assoluto(path) + '" data-title="' + attrEsc(title) + '" onclick="condividiLink(this)" class="btn btn-outline" style="font-size:11px; padding:8px 16px; white-space:nowrap; border-color:var(--gold); color:var(--gold);">🔗 Condividi</button>';
   }
+  // "pdf" puo' essere un solo indirizzo (vecchi inserimenti) oppure una lista
+  function comeLista(v) {
+    return Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
+  }
+  function resocontoBtns(v) {
+    var list = comeLista(v), html = '';
+    for (var i = 0; i < list.length; i++) {
+      html += '<a href="' + list[i] + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto' + (list.length > 1 ? ' ' + (i + 1) : '') + ' →</a>';
+    }
+    return html;
+  }
   function azioniWrap(inner) {
     return inner ? '<div style="display:flex; gap:8px; flex-wrap:wrap;">' + inner + '</div>' : '';
   }
@@ -1487,7 +1498,7 @@
               '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
               '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
             '</div>' +
-            azioniWrap((c.pdf ? '<a href="' + c.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '') + condividiBtn(c.pdf || imgs[0], c.title)) +
+            azioniWrap(resocontoBtns(c.pdf) + condividiBtn(comeLista(c.pdf)[0] || imgs[0], c.title)) +
           '</div>' +
           gallery +
         '</div>';
@@ -1724,7 +1735,7 @@
             }
             gallery += '</div>';
           }
-          var action = azioniWrap((e.pdf ? '<a href="' + e.pdf + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto →</a>' : '') + condividiBtn(e.pdf || imgs[0], e.title));
+          var action = azioniWrap(resocontoBtns(e.pdf) + condividiBtn(comeLista(e.pdf)[0] || imgs[0], e.title));
           html += ricercaRow(e.title, e.date, action, gallery);
         }
       }

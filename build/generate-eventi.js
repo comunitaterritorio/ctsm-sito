@@ -59,7 +59,9 @@ function renderPage(item, slug) {
   const pageUrl = SITE_URL + '/eventi/' + slug + '/';
   const images = Array.isArray(item.images) ? item.images.filter(Boolean) : [];
   const ogImage = images.length ? (SITE_URL + encodeURI(images[0])) : DEFAULT_OG_IMAGE;
-  const pdfUrl = item.pdf ? escapeHtml(encodeURI(item.pdf)) : '';
+  // "pdf" puo' essere un solo indirizzo (vecchi inserimenti) oppure una lista
+  const pdfList = (Array.isArray(item.pdf) ? item.pdf : [item.pdf]).filter(Boolean).map((u) => escapeHtml(encodeURI(u)));
+  const pdfUrl = pdfList[0] || '';
   const galleryHtml = images.length
     ? '<div class="gallery">' + images.map((src) => '<a href="' + escapeHtml(encodeURI(src)) + '" target="_blank" rel="noopener"><img src="' + escapeHtml(encodeURI(src)) + '" alt="' + title + '" loading="lazy"></a>').join('') + '</div>'
     : '';
@@ -68,9 +70,9 @@ function renderPage(item, slug) {
     : '';
   const pdfBox = pdfUrl
     ? `<div class="pdf-box">
-    <span>Documento dell\'evento in formato PDF</span>
+    <span>${pdfList.length > 1 ? 'Documenti' : 'Documento'} dell\'evento in formato PDF</span>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <a class="btn-gold" href="${pdfUrl}" target="_blank" rel="noopener">Scarica il PDF →</a>
+      ${pdfList.map((u, i) => `<a class="btn-gold" href="${u}" target="_blank" rel="noopener">Scarica il PDF${pdfList.length > 1 ? ' ' + (i + 1) : ''} →</a>`).join('\n      ')}
       <button class="btn-share" onclick="condividiLink(this)" type="button">🔗 Condividi</button>
     </div>
   </div>`

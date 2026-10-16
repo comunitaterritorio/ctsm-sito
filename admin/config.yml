@@ -71,12 +71,8 @@ collections:
               - { label: "Titolo evento", name: "title", widget: "string" }
               - { label: "Data (es. 20 Settembre 2026)", name: "date", widget: "string" }
               - { label: "Descrizione (facoltativa)", name: "description", widget: "text", required: false }
-              - label: "Immagini (facoltative)"
-                name: "images"
-                widget: "list"
-                required: false
-                field: { label: "Immagine", name: "image", widget: "image", media_library: { config: { multiple: false } } }
-              - { label: "File PDF (facoltativo)", name: "pdf", widget: "file", required: false, media_library: { config: { multiple: false } } }
+              - { label: "Immagini (facoltative) - puoi sceglierne quante vuoi in una volta", name: "images", widget: "multi-upload", accept: "image/*", media_folder: "/eventi", public_folder: "/eventi", required: false }
+              - { label: "File PDF (facoltativi) - puoi sceglierne piu' di uno", name: "pdf", widget: "multi-upload", accept: "application/pdf", media_folder: "/eventi", public_folder: "/eventi", required: false }
 
   - name: "incontri"
     label: "I Nostri Incontri"
@@ -96,12 +92,8 @@ collections:
             fields:
               - { label: "Nome evento", name: "title", widget: "string" }
               - { label: "Data (es. 20 Settembre 2026)", name: "date", widget: "string" }
-              - label: "Immagini della serata"
-                name: "images"
-                widget: "list"
-                required: false
-                field: { label: "Immagine", name: "image", widget: "image", media_library: { config: { multiple: false } } }
-              - { label: "PDF resoconto della serata", name: "pdf", widget: "file", required: false, media_library: { config: { multiple: false } } }
+              - { label: "Immagini della serata - puoi sceglierne quante vuoi in una volta", name: "images", widget: "multi-upload", accept: "image/*", media_folder: "/incontri", public_folder: "/incontri", required: false }
+              - { label: "PDF resoconto della serata - puoi sceglierne piu' di uno", name: "pdf", widget: "multi-upload", accept: "application/pdf", media_folder: "/incontri", public_folder: "/incontri", required: false }
 
   - name: "istanze"
     label: "Istanze d'Arengo"
