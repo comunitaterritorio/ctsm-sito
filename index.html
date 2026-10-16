@@ -1812,6 +1812,13 @@
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
     .then(function(data) {
       var items = (data.items || []).slice(); // stesso ordine del pannello: ultimo inserimento in cima
+      // Gli eventi gia' passati spariscono dal sito da soli (restano nel pannello admin).
+      // Un evento resta visibile per tutto il giorno in cui si svolge. Fuso orario: San Marino.
+      var oggi = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Rome' }); // AAAA-MM-GG
+      items = items.filter(function(it) {
+        var mm = /^(\d{4}-\d{2}-\d{2})/.exec(it.date || '');
+        return !mm || mm[1] >= oggi; // senza una data leggibile non si nasconde
+      });
       var grid = document.getElementById('events-grid');
       var banner = document.getElementById('events-empty-banner');
       if (items.length === 0) {
