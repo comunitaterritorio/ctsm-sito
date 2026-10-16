@@ -24,9 +24,9 @@ collections:
             fields:
               - { label: "Titolo", name: "title", widget: "string" }
               - { label: "Data (es. 3 Settembre 2026)", name: "date", widget: "string" }
-              - { label: "File PDF", name: "file", widget: "file", media_library: { config: { multiple: false } } }
+              - { label: "File PDF (puoi sceglierne piu' di uno in una volta)", name: "file", widget: "multi-upload", accept: "application/pdf", media_folder: "/comunicati", public_folder: "/comunicati" }
               - { label: "Descrizione breve (per WhatsApp/social, facoltativa)", name: "excerpt", widget: "text", required: false, hint: "1-2 frasi: e' il testo che appare nell'anteprima quando il link viene condiviso su WhatsApp/Facebook." }
-              - { label: "Immagine di anteprima (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } }, hint: "Se vuota, viene usata l'immagine generica del sito." }
+              - { label: "Immagini (facoltative) - puoi sceglierne quante vuoi in una volta", name: "image", widget: "multi-upload", accept: "image/*", media_folder: "/comunicati", public_folder: "/comunicati", required: false, hint: "La prima immagine e' l'anteprima per WhatsApp/social; le altre compaiono in galleria nella pagina del comunicato. Se vuoto, viene usata l'immagine generica del sito." }
 
   - name: "eventi"
     label: "Prossimi Eventi"
@@ -50,7 +50,7 @@ collections:
               - { label: "Luogo", name: "location", widget: "string" }
               - { label: "Categoria (es. Assemblea, Incontro)", name: "category", widget: "string", required: false }
               - { label: "Descrizione", name: "description", widget: "text" }
-              - { label: "Locandina / immagine (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } }, hint: "Se la inserisci, appare in cima alla card dell'evento sul sito." }
+              - { label: "Locandina / immagini (facoltative) - puoi sceglierne piu' di una", name: "image", widget: "multi-upload", accept: "image/*", media_folder: "/eventi", public_folder: "/eventi", required: false, hint: "La prima immagine appare in cima alla card dell'evento sul sito, le altre come miniature sotto." }
 
   - name: "eventi-archivio"
     label: "Archivio Eventi"
@@ -113,7 +113,7 @@ collections:
             fields:
               - { label: "Titolo", name: "title", widget: "string" }
               - { label: "Data (es. 4 Settembre 2026)", name: "date", widget: "string" }
-              - { label: "File PDF", name: "file", widget: "file", media_library: { config: { multiple: false } } }
+              - { label: "File PDF (puoi sceglierne piu' di uno in una volta)", name: "file", widget: "multi-upload", accept: "application/pdf", media_folder: "/istanze", public_folder: "/istanze" }
 
   - name: "post-evidenza"
     label: "Post in Evidenza (Social)"
@@ -133,5 +133,5 @@ collections:
             fields:
               - { label: "Testo del post", name: "text", widget: "text" }
               - { label: "Data (es. 11 Settembre 2026)", name: "date", widget: "string" }
-              - { label: "Immagine (facoltativa)", name: "image", widget: "image", required: false, media_library: { config: { multiple: false } } }
+              - { label: "Immagini (facoltative) - puoi sceglierne piu' di una", name: "image", widget: "multi-upload", accept: "image/*", media_folder: "/post-evidenza", public_folder: "/post-evidenza", required: false }
               - { label: "Link al post Facebook (facoltativo)", name: "link", widget: "string", required: false }

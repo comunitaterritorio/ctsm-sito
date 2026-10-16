@@ -1378,7 +1378,7 @@
             '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
           '</div>' +
           '<div style="display:flex; gap:8px; flex-wrap:wrap;">' +
-            '<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' +
+            pdfBtns(c.file) +
             '<button type="button" data-title="' + attrEsc(c.title) + '" onclick="condividiComunicato(this, \'' + pageUrl + '\')" class="btn btn-outline" style="font-size:11px; padding:8px 16px; white-space:nowrap; border-color:var(--gold); color:var(--gold);">🔗 Condividi</button>' +
           '</div>' +
         '</div>';
@@ -1407,13 +1407,15 @@
   function comeLista(v) {
     return Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
   }
-  function resocontoBtns(v) {
+  function fileBtns(v, label) {
     var list = comeLista(v), html = '';
     for (var i = 0; i < list.length; i++) {
-      html += '<a href="' + list[i] + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica resoconto' + (list.length > 1 ? ' ' + (i + 1) : '') + ' →</a>';
+      html += '<a href="' + list[i] + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">' + label + (list.length > 1 ? ' ' + (i + 1) : '') + ' →</a>';
     }
     return html;
   }
+  function resocontoBtns(v) { return fileBtns(v, 'Scarica resoconto'); }
+  function pdfBtns(v) { return fileBtns(v, 'Scarica PDF'); }
   function azioniWrap(inner) {
     return inner ? '<div style="display:flex; gap:8px; flex-wrap:wrap;">' + inner + '</div>' : '';
   }
@@ -1657,7 +1659,7 @@
             '<div style="font-weight:600; color:#ffffff;">' + c.title + '</div>' +
             '<div style="font-size:12px; color:rgba(255,255,255,.55); margin-top:4px;">' + c.date + '</div>' +
           '</div>' +
-          azioniWrap('<a href="' + c.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' + condividiBtn('/istanze/' + (c.slug || slugifyIstanza(c.title, c.date)) + '/', c.title)) +
+          azioniWrap(pdfBtns(c.file) + condividiBtn('/istanze/' + (c.slug || slugifyIstanza(c.title, c.date)) + '/', c.title)) +
         '</div>';
       }
     }
@@ -1719,7 +1721,7 @@
         html += '<div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:20px 0 4px;">Istanze d\'Arengo (' + istanzeRes.length + ')</div>';
         for (var j = 0; j < istanzeRes.length; j++) {
           var s = istanzeRes[j];
-          html += ricercaRow(s.title, s.date, azioniWrap('<a href="' + s.file + '" target="_blank" rel="noopener" class="btn btn-gold" style="font-size:11px; padding:8px 16px; white-space:nowrap;">Scarica PDF →</a>' + condividiBtn('/istanze/' + (s.slug || slugifyIstanza(s.title, s.date)) + '/', s.title)));
+          html += ricercaRow(s.title, s.date, azioniWrap(pdfBtns(s.file) + condividiBtn('/istanze/' + (s.slug || slugifyIstanza(s.title, s.date)) + '/', s.title)));
         }
       }
       if (incontriRes.length) {
@@ -1788,7 +1790,7 @@
       for (var i = 0; i < items.length; i++) {
         var post = items[i];
         var link = post.link || 'https://www.facebook.com/share/1BtgAiWvY3/';
-        var img = post.image ? '<img src="' + post.image + '" alt="" style="width:100%; border-radius:4px; margin-bottom:12px; display:block;">' : '';
+        var img = comeLista(post.image).map(function(u) { return '<img src="' + u + '" alt="" style="width:100%; border-radius:4px; margin-bottom:12px; display:block;">'; }).join('');
         html += '<div class="fb-post-card" onclick="window.open(\'' + link + '\',\'_blank\')" style="margin-bottom:16px;">' +
           '<div class="fb-post-card-header">' +
             '<div class="fb-post-card-avatar">CTS</div>' +
@@ -1823,9 +1825,17 @@
         var day = e.day, month = e.month, year = e.year;
         var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(e.date || '');
         if (m) { day = String(parseInt(m[3], 10)); month = MESI[parseInt(m[2], 10) - 1]; year = m[1]; }
-        var imgHtml = e.image
-          ? '<a href="' + encodeURI(e.image) + '" target="_blank" rel="noopener" style="display:block; background:var(--navy-deep);"><img src="' + encodeURI(e.image) + '" alt="' + String(e.title || '').replace(/"/g, '&quot;') + '" loading="lazy" style="display:block; width:100%; height:auto;"></a>'
+        var evImgs = comeLista(e.image);
+        var evAlt = String(e.title || '').replace(/"/g, '&quot;');
+        var imgHtml = evImgs.length
+          ? '<a href="' + encodeURI(evImgs[0]) + '" target="_blank" rel="noopener" style="display:block; background:var(--navy-deep);"><img src="' + encodeURI(evImgs[0]) + '" alt="' + evAlt + '" loading="lazy" style="display:block; width:100%; height:auto;"></a>'
           : '';
+        if (evImgs.length > 1) {
+          imgHtml += '<div style="display:flex; gap:6px; overflow-x:auto; padding:6px; background:var(--navy-deep);">' +
+            evImgs.slice(1).map(function(u) {
+              return '<a href="' + encodeURI(u) + '" target="_blank" rel="noopener" style="flex-shrink:0;"><img src="' + encodeURI(u) + '" alt="' + evAlt + '" loading="lazy" style="display:block; height:70px; width:100px; object-fit:cover; border-radius:2px;"></a>';
+            }).join('') + '</div>';
+        }
         html += '<div class="event-card">' + imgHtml +
           '<div class="event-date-band"><div class="event-day">' + (day || '•') + '</div>' +
           '<div class="event-month-year"><div class="event-month">' + (month || '') + '</div><div class="event-year">' + (year || '') + '</div></div></div>' +

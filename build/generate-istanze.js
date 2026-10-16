@@ -56,8 +56,13 @@ function renderPage(item, slug) {
   const date = escapeHtml(item.date);
   const description = escapeHtml(truncate(item.excerpt || DEFAULT_DESCRIPTION, 200));
   const pageUrl = SITE_URL + '/istanze/' + slug + '/';
-  const ogImage = item.image ? (SITE_URL + item.image) : DEFAULT_OG_IMAGE;
-  const pdfUrl = item.file || '#';
+  // "file" e "image" possono essere un solo indirizzo (vecchi inserimenti) oppure una lista
+  const toList = (v) => (Array.isArray(v) ? v : [v]).filter(Boolean);
+  const imageList = toList(item.image);
+  const ogImage = imageList.length ? (SITE_URL + encodeURI(imageList[0])) : DEFAULT_OG_IMAGE;
+  const pdfList = toList(item.file).map((u) => escapeHtml(encodeURI(u)));
+  if (!pdfList.length) pdfList.push('#');
+  const pdfButtons = pdfList.map((u, i) => `<a class="btn-gold" href="${u}" target="_blank" rel="noopener">Scarica il PDF${pdfList.length > 1 ? ' ' + (i + 1) : ''} →</a>`).join('\n      ');
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -159,9 +164,9 @@ function renderPage(item, slug) {
   <div class="date">${date}</div>
   ${item.excerpt ? `<p class="excerpt">${escapeHtml(item.excerpt)}</p>` : ''}
   <div class="pdf-box">
-    <span>Testo ufficiale dell\'Istanza in formato PDF</span>
+    <span>${pdfList.length > 1 ? 'Testi ufficiali' : 'Testo ufficiale'} dell\'Istanza in formato PDF</span>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <a class="btn-gold" href="${pdfUrl}" target="_blank" rel="noopener">Scarica il PDF →</a>
+      ${pdfButtons}
       <button class="btn-share" onclick="condividiLink(this)" type="button">🔗 Condividi</button>
     </div>
   </div>

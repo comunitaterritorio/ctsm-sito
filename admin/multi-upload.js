@@ -36,6 +36,7 @@
   // Decap tiene in bozza un solo file per ogni contenuto identico: se due file hanno
   // gli stessi byte, il secondo sostituirebbe il primo e un link resterebbe vuoto.
   // Per questo ricordiamo i file gia' caricati (contenuto -> indirizzo) e li riusiamo.
+  var blobs = {}; // indirizzo pubblico -> anteprima locale del file appena scelto
   var seen = {};
   function resetSeen() { seen = {}; }
   window.addEventListener('hashchange', resetSeen);
@@ -87,15 +88,6 @@
       return { busy: false, done: 0, total: 0, error: '', note: '', over: false };
     },
 
-    // anteprime locali dei file appena scelti (percorso -> blob URL)
-    previews: {},
-
-    componentWillUnmount: function () {
-      for (var k in this.previews) {
-        try { URL.revokeObjectURL(this.previews[k]); } catch (e) {}
-      }
-    },
-
     getList: function () {
       var v = this.props.value;
       if (!v) return [];
@@ -145,7 +137,7 @@
                   var pub = joinPublic(publicFolder, baseName(saved));
                   seen[hash] = pub;
                   if (list.indexOf(pub) === -1) list.push(pub);
-                  try { self.previews[pub] = URL.createObjectURL(file); } catch (e) {}
+                  try { blobs[pub] = URL.createObjectURL(file); } catch (e) {}
                   added++;
                 } else if (result === undefined) {
                   // l'utente ha scelto di NON sostituire un file con lo stesso nome
@@ -213,7 +205,7 @@
       }, '✕');
 
       if (this.isImage()) {
-        var src = this.previews[path] || path;
+        var src = blobs[path] || path;
         return h('div', {
           key: path,
           style: { position: 'relative', width: '110px', height: '82px', borderRadius: '3px', overflow: 'hidden', background: '#eee' }

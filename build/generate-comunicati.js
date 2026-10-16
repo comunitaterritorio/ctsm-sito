@@ -56,8 +56,13 @@ function renderPage(item, slug) {
   const date = escapeHtml(item.date);
   const description = escapeHtml(truncate(item.excerpt || DEFAULT_DESCRIPTION, 200));
   const pageUrl = SITE_URL + '/comunicati/' + slug + '/';
-  const ogImage = item.image ? (SITE_URL + item.image) : DEFAULT_OG_IMAGE;
-  const pdfUrl = item.file || '#';
+  // "file" e "image" possono essere un solo indirizzo (vecchi inserimenti) oppure una lista
+  const toList = (v) => (Array.isArray(v) ? v : [v]).filter(Boolean);
+  const imageList = toList(item.image);
+  const ogImage = imageList.length ? (SITE_URL + encodeURI(imageList[0])) : DEFAULT_OG_IMAGE;
+  const pdfList = toList(item.file).map((u) => escapeHtml(encodeURI(u)));
+  if (!pdfList.length) pdfList.push('#');
+  const pdfButtons = pdfList.map((u, i) => `<a class="btn-gold" href="${u}" target="_blank" rel="noopener">Scarica il PDF${pdfList.length > 1 ? ' ' + (i + 1) : ''} →</a>`).join('\n      ');
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -124,6 +129,8 @@ function renderPage(item, slug) {
   }
   .date { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
   .excerpt { font-size: 17px; color: var(--text); margin-bottom: 36px; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 36px; }
+  .gallery img { width: 100%; height: 150px; object-fit: cover; border-radius: 2px; display: block; }
   .pdf-box {
     border: 1px solid var(--border); border-radius: 4px; padding: 24px; background: var(--white);
     display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
@@ -158,10 +165,11 @@ function renderPage(item, slug) {
   <h1>${title}</h1>
   <div class="date">${date}</div>
   ${item.excerpt ? `<p class="excerpt">${escapeHtml(item.excerpt)}</p>` : ''}
+  ${imageList.length > 1 ? '<div class="gallery">' + imageList.slice(1).map((src) => '<a href="' + escapeHtml(encodeURI(src)) + '" target="_blank" rel="noopener"><img src="' + escapeHtml(encodeURI(src)) + '" alt="' + title + '" loading="lazy"></a>').join('') + '</div>' : ''}
   <div class="pdf-box">
-    <span>Documento ufficiale in formato PDF</span>
+    <span>${pdfList.length > 1 ? 'Documenti ufficiali' : 'Documento ufficiale'} in formato PDF</span>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <a class="btn-gold" href="${pdfUrl}" target="_blank" rel="noopener">Scarica il PDF →</a>
+      ${pdfButtons}
       <button class="btn-share" onclick="condividiLink(this)" type="button">🔗 Condividi</button>
     </div>
   </div>
