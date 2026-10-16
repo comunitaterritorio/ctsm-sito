@@ -1811,7 +1811,7 @@
   fetch('data/eventi.json?_=' + Date.now())
     .then(function(r) { return r.ok ? r.json() : { items: [] }; })
     .then(function(data) {
-      var items = (data.items || []).slice().reverse(); // Prossimi Eventi: ordine di sempre sul sito
+      var items = (data.items || []).slice(); // stesso ordine del pannello: ultimo inserimento in cima
       var grid = document.getElementById('events-grid');
       var banner = document.getElementById('events-empty-banner');
       if (items.length === 0) {
