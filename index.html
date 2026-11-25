@@ -112,6 +112,26 @@
   .nav-links a:hover { color: var(--gold); }
   .nav-links a:hover::after { transform: scaleX(1); }
 
+  /* Sottomenu "Social" */
+  .nav-links li { position: relative; }
+  .nav-links .caret { font-size: 9px; margin-left: 4px; display: inline-block; transition: transform .25s; }
+  .has-sub.open .caret { transform: rotate(180deg); }
+  .nav-sub {
+    position: absolute; top: 100%; left: 0; min-width: 210px; margin-top: 14px;
+    background: var(--navy); border: 1px solid rgba(201,168,76,.25); border-top: 2px solid var(--gold);
+    box-shadow: 0 14px 34px rgba(0,0,0,.3); list-style: none; padding: 6px 0;
+    display: none; z-index: 1100;
+  }
+  /* ponte invisibile: il mouse puo' passare dalla voce al sottomenu senza farlo chiudere */
+  .nav-sub::before { content: ''; position: absolute; left: 0; right: 0; top: -16px; height: 16px; }
+  .has-sub.open > .nav-sub { display: block; }
+  @media (hover: hover) { .has-sub:hover > .nav-sub { display: block; } }
+  .nav-sub a { padding: 12px 22px; white-space: nowrap; letter-spacing: .12em; }
+  .nav-sub a::after { display: none; }
+  .nav-sub a:hover { background: rgba(201,168,76,.1); }
+  .nav-sub .nav-sub-sep { border-top: 1px solid rgba(255,255,255,.1); margin-top: 6px; padding-top: 6px; }
+  .nav-sub .nav-sub-sep a { font-size: 11px; color: rgba(255,255,255,.5); }
+
   .nav-cta {
     background: var(--gold); color: var(--navy) !important;
     padding: 8px 20px !important; border-radius: 2px;
@@ -136,9 +156,22 @@
   .mobile-menu {
     display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
     background: var(--navy-deep); z-index: 1000;
-    flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    flex-direction: column; align-items: center; justify-content: flex-start; gap: 32px;
     -webkit-overflow-scrolling: touch; overflow-y: auto;
   }
+  /* centrato in verticale, ma se il contenuto e' piu' alto dello schermo si scorre senza tagliare la parte alta */
+  .mobile-menu > :first-child { margin-top: auto; }
+  .mobile-menu > :last-child { margin-bottom: auto; }
+  .mob-sub-toggle {
+    background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit;
+    font-size: 22px; color: rgba(255,255,255,.8); letter-spacing: .1em;
+  }
+  .mob-sub-toggle:hover, .mob-sub-toggle[aria-expanded="true"] { color: var(--gold); }
+  .mob-sub-toggle .caret { font-size: 12px; margin-left: 6px; display: inline-block; transition: transform .25s; }
+  .mob-sub-toggle[aria-expanded="true"] .caret { transform: rotate(180deg); }
+  .mob-sub { display: none; flex-direction: column; align-items: center; gap: 18px; margin-top: -12px; }
+  .mob-sub.open { display: flex; }
+  .mobile-menu .mob-sub a { font-size: 18px; color: rgba(255,255,255,.65); }
   .mobile-menu.open { display: flex !important; }
   .mobile-menu.open { display: flex; }
   .mobile-menu a { font-size: 22px; color: rgba(255,255,255,.8); text-decoration: none; letter-spacing: .1em; }
@@ -754,7 +787,15 @@
   <ul class="nav-links">
     <li><a href="#chi-siamo">Chi siamo</a></li>
     <li><a href="#eventi">Eventi</a></li>
-    <li><a href="#social">Social</a></li>
+    <li class="has-sub" id="navSocial">
+      <a href="#social" id="navSocialToggle" aria-haspopup="true" aria-expanded="false" aria-controls="navSocialMenu">Social <span class="caret" aria-hidden="true">▼</span></a>
+      <ul class="nav-sub" id="navSocialMenu" role="menu">
+      <li><a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener" role="menuitem">Facebook</a></li>
+      <li><a href="https://www.instagram.com/comunitaterritoriosanmarino?igsh=eDhvOThkaTQ2emkz" target="_blank" rel="noopener" role="menuitem">Instagram</a></li>
+      <li><a href="https://wa.me/393665730811" target="_blank" rel="noopener" role="menuitem">WhatsApp</a></li>
+        <li class="nav-sub-sep"><a href="#social" role="menuitem" onclick="closeSocialMenu()">Vai alla sezione Social</a></li>
+      </ul>
+    </li>
     <li><a href="#notizie">Notizie</a></li>
     <li><a href="#" onclick="openRicercaGlobale(); return false;">🔍 Cerca</a></li>
     <li><a href="#newsletter">Newsletter</a></li>
@@ -769,7 +810,15 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#chi-siamo" class="mob-link">Chi siamo</a>
   <a href="#eventi" class="mob-link">Eventi</a>
-  <a href="#social" class="mob-link">Social</a>
+  <div style="display:flex; flex-direction:column; align-items:center; gap:32px;">
+    <button type="button" class="mob-sub-toggle" id="mobSocialToggle" aria-expanded="false" aria-controls="mobSocialSub">Social <span class="caret" aria-hidden="true">▼</span></button>
+    <div class="mob-sub" id="mobSocialSub">
+    <a href="https://www.facebook.com/share/1BtgAiWvY3/" target="_blank" rel="noopener">Facebook</a>
+    <a href="https://www.instagram.com/comunitaterritoriosanmarino?igsh=eDhvOThkaTQ2emkz" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://wa.me/393665730811" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="#social">Vai alla sezione Social</a>
+    </div>
+  </div>
   <a href="#notizie" class="mob-link">Notizie</a>
   <a href="#" onclick="closeMobile(); openRicercaGlobale(); return false;">🔍 Cerca</a>
   <a href="#newsletter" onclick="closeMobile()">Newsletter</a>
@@ -1259,6 +1308,38 @@
     }
 
     window.closeMobile = closeMenu;
+
+    // Sottomenu Social nel menu del telefono (e' un pulsante: non chiude il menu)
+    var mt = document.getElementById('mobSocialToggle');
+    var ms = document.getElementById('mobSocialSub');
+    if (mt && ms) {
+      mt.addEventListener('click', function() {
+        var open = ms.classList.toggle('open');
+        mt.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+  })();
+
+  // SOTTOMENU SOCIAL (computer): si apre con un clic o un tocco, e anche passandoci sopra col mouse
+  (function() {
+    var li = document.getElementById('navSocial');
+    var tg = document.getElementById('navSocialToggle');
+    if (!li || !tg) return;
+    function setOpen(o) {
+      li.classList.toggle('open', o);
+      tg.setAttribute('aria-expanded', o ? 'true' : 'false');
+    }
+    tg.addEventListener('click', function(e) {
+      e.preventDefault();
+      setOpen(!li.classList.contains('open'));
+    });
+    document.addEventListener('click', function(e) {
+      if (!li.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { setOpen(false); }
+    });
+    window.closeSocialMenu = function() { setOpen(false); };
   })();
 
   // ============================================================
